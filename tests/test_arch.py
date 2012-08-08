@@ -47,18 +47,42 @@ class TestOpcodeDecode(TestCase):
     def setUp(self):
         self.cpu = Chip8()
 
-    def test_RCA_CALL(self):
-        expected = (0x0, 0x200)
-        self.assertEqual(expected, self.cpu.decode(0x0200))
+    # Opcodes with no arguments
 
     def test_CLS(self):
+        '00E0 - Clears the screen.'
         expected = (0x00E0,)
         self.assertEqual(expected, self.cpu.decode(0x00E0))
 
     def test_RET(self):
+        '00EE - Returns from a subroutine.'
         expected = (0x00EE,)
         self.assertEqual(expected, self.cpu.decode(0x00EE))
 
+    # Opcodes with one argument: memory address
+
+    def test_RCA(self):
+        '0NNN - Calls RCA 1802 program at address NNN.'
+        expected = (0x0, 0x200)
+        self.assertEqual(expected, self.cpu.decode(0x0200))
+
     def test_JMP(self):
-        expected = (0x01, 0x200)
+        '1NNN - Jumps to address NNN.'
+        expected = (0x1, 0x200)
         self.assertEqual(expected, self.cpu.decode(0x1200))
+
+    def test_CALL(self):
+        '2NNN - Calls subroutine at NNN.'
+        expected = (0x2, 0x200)
+        self.assertEqual(expected, self.cpu.decode(0x2200))
+
+    def test_SETI(self):
+        'ANNN - Sets I to the address NNN.'
+        expected = (0xA, 0x200)
+        self.assertEqual(expected, self.cpu.decode(0xA200))
+
+    def test_JMP0(self):
+        'BNNN - Jumps to the address NNN plus V0.'
+        expected = (0xB, 0x200)
+        self.assertEqual(expected, self.cpu.decode(0xB200))
+
