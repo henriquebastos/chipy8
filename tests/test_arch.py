@@ -86,3 +86,25 @@ class TestOpcodeDecode(TestCase):
         expected = (0xB, 0x200)
         self.assertEqual(expected, self.cpu.decode(0xB200))
 
+    # Opcodes with 2 arguments: one register and a constant word.
+
+    def test_BEQ(self):
+        '3XNN - Skips the next instruction if VX equals NN.'
+        expected = (0x3, 0x1, 0x99)
+        self.assertEqual(expected, self.cpu.decode(0x3199))
+
+    def test_BNE(self):
+        "4XNN - Skips the next instruction if VX doesn't equal NN."
+        expected = (0x4, 0x1, 0x99)
+        self.assertEqual(expected, self.cpu.decode(0x4199))
+
+    def test_SETR(self):
+        '6XNN - Sets VX to NN.'
+        expected = (0x6, 0x1, 0x99)
+        self.assertEqual(expected, self.cpu.decode(0x6199))
+
+    def test_ADDR(self):
+        '7XNN - Adds NN to VX.'
+        expected = (0x7, 0x1, 0x99)
+        self.assertEqual(expected, self.cpu.decode(0x7199))
+

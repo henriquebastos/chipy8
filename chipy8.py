@@ -26,7 +26,8 @@ class Memory(object):
 instruction = lambda op: op >> 12
 mask = lambda i: i << 12
 address = lambda op: op ^ mask(instruction(op))
-
+register1 = lambda op: (op ^ mask(instruction(op))) >> 8
+constant8 = lambda op: (op >> 8 << 8) ^ op
 
 class Chip8(object):
     def __init__(self):
@@ -53,4 +54,6 @@ class Chip8(object):
         if instruction(opcode) in [0x0, 0x1, 0x2, 0xA, 0xB]:
             return instruction(opcode), address(opcode)
 
+        if instruction(opcode) in [0x3, 0x4, 0x6, 0x7]:
+            return instruction(opcode), register1(opcode), constant8(opcode)
 
