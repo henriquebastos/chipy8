@@ -2,7 +2,7 @@ from unittest import TestCase
 from chipy8 import Chip8
 
 
-class Chip8Architecture(TestCase):
+class TestChip8Architecture(TestCase):
     def setUp(self):
         self.cpu = Chip8()
 
