@@ -27,7 +27,9 @@ instruction = lambda op: op >> 12
 mask = lambda i: i << 12
 address = lambda op: op ^ mask(instruction(op))
 register1 = lambda op: (op ^ mask(instruction(op))) >> 8
+register2 = lambda op: ((op >> 8 << 8) ^ op) >> 4
 constant8 = lambda op: (op >> 8 << 8) ^ op
+instruction2 = lambda op: ((op >> 4 << 4) ^ op) | ((op >> 12 << 4))
 
 class Chip8(object):
     def __init__(self):
@@ -57,3 +59,8 @@ class Chip8(object):
         if instruction(opcode) in [0x3, 0x4, 0x6, 0x7]:
             return instruction(opcode), register1(opcode), constant8(opcode)
 
+        if instruction(opcode) == 0x5:
+            return instruction(opcode), register1(opcode), register2(opcode)
+
+        if instruction2(opcode) in [0x80, 0x81, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87, 0x8E, 0x90]:
+            return instruction2(opcode), register1(opcode), register2(opcode)
