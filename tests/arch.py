@@ -1,4 +1,4 @@
-from unittest import TestCase, main
+from unittest import TestCase
 from chipy8 import Chip8
 
 
@@ -45,7 +45,3 @@ class Chip8Architecture(TestCase):
     def test_keyboard(self):
         'Chip8 has a hex keyboard with 16 keys.'
         self.assertEqual(16, len(self.cpu.keyboard))
-
-
-if __name__ == '__main__':
-    main()
