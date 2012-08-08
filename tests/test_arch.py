@@ -10,10 +10,6 @@ class TestChip8Architecture(TestCase):
         'Chip8 has 4096 bytes of memory.'
         self.assertEqual(4096, len(self.cpu.memory))
 
-    def test_memory_clear(self):
-        'Chip8 must be initialized with a clear memory.'
-        self.assertListEqual([0x00] * 4096, self.cpu.memory)
-
     def test_register_count(self):
         'Chip8 has 16 registers.'
         self.assertEqual(16, len(self.cpu.registers))
