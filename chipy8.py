@@ -1,5 +1,23 @@
 
 
+class Memory(object):
+    def __init__(self):
+        self._stream = [0x00] * 4096
+
+    def __len__(self):
+        return len(self._stream)
+
+    def read_byte(self, address):
+        return self._stream[address]
+
+    def write_byte(self, address, data):
+        self._stream[address] = data
+
+    def load(self, address, data):
+        for offset, datum in enumerate(data):
+            self._stream[address + offset] = datum
+
+
 class Chip8(object):
     def __init__(self):
         self.registers = [0x00] * 16
