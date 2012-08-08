@@ -98,7 +98,7 @@ class TestOpcodeDecode(TestCase):
         expected = (0x4, 0x1, 0x99)
         self.assertEqual(expected, self.cpu.decode(0x4199))
 
-    def test_SETR(self):
+    def test_SETX(self):
         '6XNN - Sets VX to NN.'
         expected = (0x6, 0x1, 0x99)
         self.assertEqual(expected, self.cpu.decode(0x6199))
@@ -107,4 +107,11 @@ class TestOpcodeDecode(TestCase):
         '7XNN - Adds NN to VX.'
         expected = (0x7, 0x1, 0x99)
         self.assertEqual(expected, self.cpu.decode(0x7199))
+
+    # Opcodes with 2 register arguments
+
+    def test_BEQR(self):
+        '5XY0 - Skips the next instruction if VX equals VY.'
+        expected = (0x5, 0x1, 0x2)
+        self.assertEqual(expected, self.cpu.decode(0x5120))
 
