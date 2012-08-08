@@ -41,3 +41,15 @@ class Chip8(object):
         self.delay_timer = 0
         self.sound_timer = 0
 
+    def decode(self, opcode):
+        if opcode in [0x00E0, 0x00EE]:
+            return (opcode,)
+
+        instruction = opcode >> 12
+        if instruction == 0x0:
+            address = opcode
+            return (instruction, address)
+        elif instruction == 0x1:
+            address = opcode ^ (instruction << 12)
+            return (instruction, address)
+

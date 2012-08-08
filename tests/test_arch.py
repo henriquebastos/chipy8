@@ -41,3 +41,24 @@ class TestChip8Architecture(TestCase):
     def test_keyboard(self):
         'Chip8 has a hex keyboard with 16 keys.'
         self.assertEqual(16, len(self.cpu.keyboard))
+
+
+class TestOpcodeDecode(TestCase):
+    def setUp(self):
+        self.cpu = Chip8()
+
+    def test_RCA_CALL(self):
+        expected = (0x0, 0x200)
+        self.assertEqual(expected, self.cpu.decode(0x0200))
+
+    def test_CLS(self):
+        expected = (0x00E0,)
+        self.assertEqual(expected, self.cpu.decode(0x00E0))
+
+    def test_RET(self):
+        expected = (0x00EE,)
+        self.assertEqual(expected, self.cpu.decode(0x00EE))
+
+    def test_JMP(self):
+        expected = (0x01, 0x200)
+        self.assertEqual(expected, self.cpu.decode(0x1200))
