@@ -24,7 +24,7 @@ class Chip8(object):
         self.index_register = 0
         self.program_counter = 0x200
 
-        self.memory = [0x00] * 4096
+        self.memory = Memory()
         # 0x000-0x1FF - Chip 8 interpreter (contains font set in emu)
         # 0x050-0x0A0 - Used for the built in 4x5 pixel font set (0-F)
         # 0x200-0xFFF - Program ROM and work RAM
