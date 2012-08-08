@@ -4,7 +4,7 @@ class Chip8(object):
     def __init__(self):
         self.registers = [0x00] * 16
         self.index_register = 0
-        self.program_counter = 0
+        self.program_counter = 0x200
 
         self.memory = [0x00] * 4096
         # 0x000-0x1FF - Chip 8 interpreter (contains font set in emu)

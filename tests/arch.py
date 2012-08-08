@@ -19,8 +19,8 @@ class Chip8Architecture(TestCase):
         self.assertEqual(16, len(self.cpu.registers))
 
     def test_program_counter(self):
-        'Chip8 has a program counter.'
-        self.assertEqual(0, self.cpu.program_counter)
+        'Chip8 has a program counter starting at 0x200.'
+        self.assertEqual(0x200, self.cpu.program_counter)
 
     def test_index_register(self):
         'Chip8 has an index register.'
