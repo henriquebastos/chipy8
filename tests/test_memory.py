@@ -20,3 +20,8 @@ class TestMemory(TestCase):
         self.assertEqual(0x01, self.memory.read_byte(address))
         self.assertEqual(0x02, self.memory.read_byte(address + 1))
         self.assertEqual(0x03, self.memory.read_byte(address + 2))
+
+    def test_read_word(self):
+        address = 0x200
+        self.memory.load(address, [0x01, 0x02])
+        self.assertEqual(0x0102, self.memory.read_word(address))

@@ -17,6 +17,11 @@ class Memory(object):
         for offset, datum in enumerate(data):
             self._stream[address + offset] = datum
 
+    def read_word(self, address):
+        high = self.read_byte(address) << 8
+        low = self.read_byte(address + 1)
+        return high + low
+
 
 class Chip8(object):
     def __init__(self):
