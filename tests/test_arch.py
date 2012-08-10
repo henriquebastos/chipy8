@@ -1,3 +1,4 @@
+# coding: UTF-8
 from unittest import TestCase
 from chipy8 import Chip8
 
