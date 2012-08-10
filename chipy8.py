@@ -23,13 +23,13 @@ class Memory(object):
         return high + low
 
 
-instruction = lambda op: op >> 12
-address = lambda op: (op | 0xF000) ^ 0xF000
-register1 = lambda op: ((op | 0xF0FF) ^ 0xF0FF) >> 8
-register2 = lambda op: ((op | 0xFF0F) ^ 0xFF0F) >> 4
-constant8 = lambda op: (op | 0xFF00) ^ 0xFF00
-instruction2 = lambda op: (op | 0x0FF0) ^ 0x0FF0
-constant4 = lambda op: (op | 0xFFF0) ^ 0xFFF0
+
+I   = lambda op: (op | 0x0FF0) ^ 0x0FF0 if 0x8000 <= op <= 0x9FFF else op >> 12
+X   = lambda op: ((op | 0xF0FF) ^ 0xF0FF) >> 8
+Y   = lambda op: ((op | 0xFF0F) ^ 0xFF0F) >> 4
+N   = lambda op: (op | 0xFFF0) ^ 0xFFF0
+NN  = lambda op: (op | 0xFF00) ^ 0xFF00
+NNN = lambda op: (op | 0xF000) ^ 0xF000
 
 class Chip8(object):
     def __init__(self):
@@ -49,23 +49,26 @@ class Chip8(object):
         self.delay_timer = 0
         self.sound_timer = 0
 
-    def decode(self, opcode):
-        if opcode in [0x00E0, 0x00EE]:
-            return (opcode,)
+    def decode(self, op):
+        if op in [0x00E0, 0x00EE]:
+            return (op,)
 
-        if instruction(opcode) in [0x0, 0x1, 0x2, 0xA, 0xB]:
-            return instruction(opcode), address(opcode)
+        instruction = I(op)
 
-        if instruction(opcode) in [0x3, 0x4, 0x6, 0x7, 0xC]:
-            return instruction(opcode), register1(opcode), constant8(opcode)
+        if instruction in [0x0, 0x1, 0x2, 0xA, 0xB]:
+            return instruction, NNN(op)
 
-        if instruction(opcode) == 0x5:
-            return instruction(opcode), register1(opcode), register2(opcode)
+        if instruction in [0x3, 0x4, 0x6, 0x7, 0xC]:
+            return instruction, X(op), NN(op)
 
-        if instruction(opcode) == 0xD:
-            return instruction(opcode), register1(opcode), register2(opcode), constant4(opcode)
-        if instruction2(opcode) in [0x8000, 0x8001, 0x8002, 0x8003, 0x8004, 0x8005, 0x8006, 0x8007, 0x800E, 0x9000]:
-            return instruction2(opcode), register1(opcode), register2(opcode)
+        if instruction == 0x5:
+            return instruction, X(op), Y(op)
 
-        if instruction(opcode) >= 0xE:
-            return instruction(opcode), register1(opcode)
+        if instruction == 0xD:
+            return instruction, X(op), Y(op), N(op)
+
+        if 0x8000 <= instruction <= 0x9000:
+            return instruction, X(op), Y(op)
+
+        if instruction >= 0xE:
+            return instruction, X(op)
