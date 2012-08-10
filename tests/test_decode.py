@@ -52,31 +52,31 @@ class TestOpcodeDecode(TestCase):
         self.assertEqual(self.cpu.decode(0x5120), (0x5, 0x1, 0x2))
 
     def test_8XY0(self):
-        self.assertEqual(self.cpu.decode(0x8120), (0x80, 0x1, 0x2))
+        self.assertEqual(self.cpu.decode(0x8120), (0x8000, 0x1, 0x2))
 
     def test_8XY1(self):
-        self.assertEqual(self.cpu.decode(0x8121), (0x81, 0x1, 0x2))
+        self.assertEqual(self.cpu.decode(0x8121), (0x8001, 0x1, 0x2))
 
     def test_8XY2(self):
-        self.assertEqual(self.cpu.decode(0x8122), (0x82, 0x1, 0x2))
+        self.assertEqual(self.cpu.decode(0x8122), (0x8002, 0x1, 0x2))
 
     def test_8XY3(self):
-        self.assertEqual(self.cpu.decode(0x8123), (0x83, 0x1, 0x2))
+        self.assertEqual(self.cpu.decode(0x8123), (0x8003, 0x1, 0x2))
 
     def test_8XY4(self):
-        self.assertEqual(self.cpu.decode(0x8124), (0x84, 0x1, 0x2))
+        self.assertEqual(self.cpu.decode(0x8124), (0x8004, 0x1, 0x2))
 
     def test_8XY5(self):
-        self.assertEqual(self.cpu.decode(0x8125), (0x85, 0x1, 0x2))
+        self.assertEqual(self.cpu.decode(0x8125), (0x8005, 0x1, 0x2))
 
     def test_8XY6(self):
-        self.assertEqual(self.cpu.decode(0x8126), (0x86, 0x1, 0x2))
+        self.assertEqual(self.cpu.decode(0x8126), (0x8006, 0x1, 0x2))
 
     def test_8XY7(self):
-        self.assertEqual(self.cpu.decode(0x8127), (0x87, 0x1, 0x2))
+        self.assertEqual(self.cpu.decode(0x8127), (0x8007, 0x1, 0x2))
 
     def test_8XYE(self):
-        self.assertEqual(self.cpu.decode(0x812E), (0x8E, 0x1, 0x2))
+        self.assertEqual(self.cpu.decode(0x812E), (0x800E, 0x1, 0x2))
 
     def test_9XY0(self):
-        self.assertEqual(self.cpu.decode(0x9120), (0x90, 0x1, 0x2))
+        self.assertEqual(self.cpu.decode(0x9120), (0x9000, 0x1, 0x2))
