@@ -29,6 +29,7 @@ register1 = lambda op: ((op | 0xF0FF) ^ 0xF0FF) >> 8
 register2 = lambda op: ((op | 0xFF0F) ^ 0xFF0F) >> 4
 constant8 = lambda op: (op | 0xFF00) ^ 0xFF00
 instruction2 = lambda op: (op | 0x0FF0) ^ 0x0FF0
+constant4 = lambda op: (op | 0xFFF0) ^ 0xFFF0
 
 class Chip8(object):
     def __init__(self):
@@ -55,11 +56,16 @@ class Chip8(object):
         if instruction(opcode) in [0x0, 0x1, 0x2, 0xA, 0xB]:
             return instruction(opcode), address(opcode)
 
-        if instruction(opcode) in [0x3, 0x4, 0x6, 0x7]:
+        if instruction(opcode) in [0x3, 0x4, 0x6, 0x7, 0xC]:
             return instruction(opcode), register1(opcode), constant8(opcode)
 
         if instruction(opcode) == 0x5:
             return instruction(opcode), register1(opcode), register2(opcode)
 
+        if instruction(opcode) == 0xD:
+            return instruction(opcode), register1(opcode), register2(opcode), constant4(opcode)
         if instruction2(opcode) in [0x8000, 0x8001, 0x8002, 0x8003, 0x8004, 0x8005, 0x8006, 0x8007, 0x800E, 0x9000]:
             return instruction2(opcode), register1(opcode), register2(opcode)
+
+        if instruction(opcode) >= 0xE:
+            return instruction(opcode), register1(opcode)
