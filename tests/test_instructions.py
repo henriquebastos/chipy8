@@ -7,6 +7,14 @@ class TestInstructios(TestCase):
     def setUp(self):
         self.cpu = Chip8()
 
+    def test_00EE(self):
+        self.cpu.stack.append(0x200)
+        self.cpu.memory.load(0x400, [0x00, 0xEE])
+        self.cpu.program_counter = 0x400
+        self.cpu.cycle()
+        self.assertListEqual([], self.cpu.stack)
+        self.assertEqual(0x200, self.cpu.program_counter)
+
     def test_1NNN(self):
         self.cpu.memory.load(ENTRY_POINT, [0x14, 0x00])
         self.cpu.cycle()

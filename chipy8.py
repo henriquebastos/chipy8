@@ -68,6 +68,7 @@ class Chip8(object):
         self.sound_timer = 0
 
         self.INSTRUCTION_SET = {
+            0x00EE: self.op_00EE,
             0x1   : self.op_1NNN,
             0x2   : self.op_2NNN,
             0x8000: self.op_8XY0,
@@ -113,6 +114,9 @@ class Chip8(object):
         self.execute(instruction, args)
 
     # INSTRUCTIONS
+
+    def op_00EE(self):
+        self.program_counter = self.stack.pop()
 
     def op_1NNN(self, address):
         self.program_counter = address
