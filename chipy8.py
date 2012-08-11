@@ -54,35 +54,41 @@ class Chip8(object):
         self.sound_timer = 0
 
     def decode(self, op):
-        if op in [0x00E0, 0x00EE]:
-            return (op,)
+        if op in [0x00E0, 0x00EE]: # special case
+            return (op, tuple())
 
         instruction = I(op)
 
         if instruction in [0x0, 0x1, 0x2, 0xA, 0xB]:
-            return instruction, NNN(op)
+            args = (NNN(op),)
 
-        if instruction in [0x3, 0x4, 0x6, 0x7, 0xC]:
-            return instruction, X(op), NN(op)
+        elif instruction in [0x3, 0x4, 0x6, 0x7, 0xC]:
+            args = X(op), NN(op)
 
-        if instruction == 0x5:
-            return instruction, X(op), Y(op)
+        elif instruction == 0x5:
+            args = X(op), Y(op)
 
-        if instruction == 0xD:
-            return instruction, X(op), Y(op), N(op)
+        elif instruction == 0xD:
+            args = X(op), Y(op), N(op)
 
-        if 0x8000 <= instruction <= 0x9000:
-            return instruction, X(op), Y(op)
+        elif 0x8000 <= instruction <= 0x9000:
+            args = X(op), Y(op)
 
-        if instruction >= 0xE:
-            return instruction, X(op)
+        elif instruction >= 0xE:
+            args = (X(op),)
+
+        return instruction, args
 
     def fetch(self):
         return self.memory.read_word(self.program_counter)
 
     def cycle(self):
         word = self.fetch()
-        opcode = self.decode(word)
+        instruction, args = self.decode(word)
 
-        #if opcode[0] == 0x1:
-        self.program_counter = opcode[1]
+        def jump(address):
+            self.program_counter = address
+
+        OPCODES = { 0x1 : jump }
+
+        OPCODES[instruction](*args)
