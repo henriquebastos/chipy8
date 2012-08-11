@@ -57,11 +57,17 @@ def op_2NNN(cpu, address):
 def op_ANNN(cpu, address):
     cpu.index_register = address
 
+def op_F055(cpu, X):
+    X_inclusive = X + 1
+    data = cpu.registers[0:X_inclusive]
+    cpu.memory.load(cpu.index_register, data)
+
 
 INSTRUCTION_SET = {
     0x1: op_1NNN,
     0x2: op_2NNN,
     0xA: op_ANNN,
+    0xF055: op_F055,
 }
 
 
