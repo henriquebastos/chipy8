@@ -40,6 +40,20 @@ class TestInstructios(TestCase):
         self.cpu.cycle()
         self.assertEqual(ENTRY_POINT+0x2, self.cpu.program_counter)
 
+    def test_4XNN_equal(self):
+        value = 0x69
+        self.cpu.registers[0x2] = value
+        self.cpu.memory.load(0x200, [0x42, value])
+        self.cpu.cycle()
+        self.assertEqual(0x202, self.cpu.program_counter)
+
+    def test_4XNN_unequal(self):
+        valueA, valueB = 0x69, 0x70
+        self.cpu.registers[0x2] = valueA
+        self.cpu.memory.load(0x200, [0x42, valueB])
+        self.cpu.cycle()
+        self.assertEqual(0x204, self.cpu.program_counter)
+
     def test_8XY0(self):
         X, Y = 0x2, 0x4
         self.cpu.registers[Y] = 0x42
