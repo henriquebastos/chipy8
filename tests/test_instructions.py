@@ -26,6 +26,20 @@ class TestInstructios(TestCase):
         self.assertEqual(0x400, self.cpu.program_counter)
         self.assertListEqual([0x200], self.cpu.stack)
 
+    def test_3XNN_equal(self):
+        value = 0x42
+        self.cpu.registers[0x5] = value
+        self.cpu.memory.load(ENTRY_POINT, [0x35, value])
+        self.cpu.cycle()
+        self.assertEqual(ENTRY_POINT+0x4, self.cpu.program_counter)
+
+    def test_3XNN_unequal(self):
+        valueA, valueB = 0x42, 0x24
+        self.cpu.registers[0x5] = valueA
+        self.cpu.memory.load(ENTRY_POINT, [0x35, valueB])
+        self.cpu.cycle()
+        self.assertEqual(ENTRY_POINT+0x2, self.cpu.program_counter)
+
     def test_8XY0(self):
         X, Y = 0x2, 0x4
         self.cpu.registers[Y] = 0x42

@@ -71,6 +71,7 @@ class Chip8(object):
             0x00EE: self.op_00EE,
             0x1   : self.op_1NNN,
             0x2   : self.op_2NNN,
+            0x3   : self.op_3XNN,
             0x8000: self.op_8XY0,
             0xA   : self.op_ANNN,
             0xF055: self.op_F055,
@@ -113,6 +114,12 @@ class Chip8(object):
         instruction, args = self.decode(word)
         self.execute(instruction, args)
 
+    def increment_program_counter(self):
+        self.program_counter += 0x2
+
+    def skip_next_instruction(self):
+        self.program_counter += 0x4
+
     # INSTRUCTIONS
 
     def op_00EE(self):
@@ -124,6 +131,13 @@ class Chip8(object):
     def op_2NNN(self, address):
         self.stack.append(self.program_counter)
         self.program_counter = address
+
+    def op_3XNN(self, X, NN):
+        'Skip the following instruction if the value of VX == NN.'
+        if self.registers[X] == NN:
+            self.skip_next_instruction()
+        else:
+            self.increment_program_counter()
 
     def op_8XY0(self, X, Y):
         'Store the value of register VY in register VX'
