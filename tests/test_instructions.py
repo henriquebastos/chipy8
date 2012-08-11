@@ -18,3 +18,7 @@ class TestInstructios(TestCase):
         self.assertEqual(0x400, self.cpu.program_counter)
         self.assertListEqual([0x200], self.cpu.stack)
 
+    def test_ANNN(self):
+        self.cpu.memory.load(ENTRY_POINT, [0xA4, 0x00])
+        self.cpu.cycle()
+        self.assertEqual(0x400, self.cpu.index_register)
