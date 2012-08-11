@@ -67,15 +67,6 @@ def op_F055(cpu, X):
     cpu.memory.load(cpu.index_register, data)
 
 
-INSTRUCTION_SET = {
-    0x1: op_1NNN,
-    0x2: op_2NNN,
-    0x8000: op_8XY0,
-    0xA: op_ANNN,
-    0xF055: op_F055,
-}
-
-
 class Chip8(object):
     def __init__(self):
         self.registers = [0x00] * 16
@@ -93,6 +84,14 @@ class Chip8(object):
 
         self.delay_timer = 0
         self.sound_timer = 0
+
+        self.INSTRUCTION_SET = {
+            0x1   : op_1NNN,
+            0x2   : op_2NNN,
+            0x8000: op_8XY0,
+            0xA   : op_ANNN,
+            0xF055: op_F055,
+        }
 
     def decode(self, op):
         if op in [0x00E0, 0x00EE]: # special case
@@ -120,11 +119,14 @@ class Chip8(object):
 
         return instruction, args
 
+    def execute(self, instruction, args):
+        self.INSTRUCTION_SET[instruction](*args)
+
     def fetch(self):
         return self.memory.read_word(self.program_counter)
 
     def cycle(self):
         word = self.fetch()
         instruction, args = self.decode(word)
+        self.execute(instruction, args)
 
-        INSTRUCTION_SET[instruction](self, *args)
