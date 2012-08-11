@@ -161,14 +161,16 @@ class Chip8(object):
     def op_8XY0(self, X, Y):
         'Store the value of register VY in register VX.'
         self.registers[X] = self.registers[Y]
+        self.increment_program_counter()
 
     def op_ANNN(self, address):
         'Store memory address NNN in register I.'
         self.index_register = address
+        self.increment_program_counter()
 
     def op_F055(self, X):
         'Store values of V0 to VX inclusive in mem starting at addr I.'
-        X_inclusive = X + 1
-        data = self.registers[0:X_inclusive]
+        data = self.registers[0:X+1]
         self.memory.load(self.index_register, data)
+        self.increment_program_counter()
 

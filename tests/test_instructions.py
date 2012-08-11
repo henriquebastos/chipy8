@@ -76,11 +76,13 @@ class TestInstructios(TestCase):
         self.cpu.cycle()
         self.assertEqual(self.cpu.registers[X],
                          self.cpu.registers[Y])
+        self.assertEqual(ENTRY_POINT+0x2, self.cpu.program_counter)
 
     def test_ANNN(self):
         self.cpu.memory.load(ENTRY_POINT, [0xA4, 0x00])
         self.cpu.cycle()
         self.assertEqual(0x400, self.cpu.index_register)
+        self.assertEqual(ENTRY_POINT+0x2, self.cpu.program_counter)
 
     def test_FX55(self):
         self.cpu.index_register = 0x400
@@ -89,4 +91,5 @@ class TestInstructios(TestCase):
         registers = self.cpu.registers[:5+1]
         in_memory = self.cpu.memory.read(0x400, len(registers))
         self.assertEqual(registers, in_memory)
+        self.assertEqual(ENTRY_POINT+0x2, self.cpu.program_counter)
 
