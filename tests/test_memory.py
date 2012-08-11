@@ -13,6 +13,10 @@ class TestMemory(TestCase):
         self.memory.write_byte(address, 0x01)
         self.assertEqual(0x01, self.memory.read_byte(address))
 
+    def test_write_must_receive_byte(self):
+        self.assertRaises(ValueError,
+                          self.memory.write_byte, 0x200, 0x100)
+
     def test_load(self):
         'Load a stream of bytes to memory starting on an address.'
         address = 0x200

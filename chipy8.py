@@ -11,6 +11,9 @@ class Memory(object):
         return self._stream[address]
 
     def write_byte(self, address, data):
+        if data > 0xFF:
+            raise ValueError('%x > 0xFF' % data)
+
         self._stream[address] = data
 
     def load(self, address, data):
