@@ -25,6 +25,11 @@ class Memory(object):
         low = self.read_byte(address + 1)
         return high + low
 
+    def read(self, address, length):
+        start = address
+        stop = address + length
+        return self._stream[start:stop]
+
 
 ENTRY_POINT = 0x200
 
