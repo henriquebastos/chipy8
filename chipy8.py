@@ -35,6 +35,15 @@ N   = lambda op: (op | 0xFFF0) ^ 0xFFF0
 NN  = lambda op: (op | 0xFF00) ^ 0xFF00
 NNN = lambda op: (op | 0xF000) ^ 0xF000
 
+def op_1NNN(cpu, address):
+    cpu.program_counter = address
+
+
+INSTRUCTION_SET = {
+    0x1: op_1NNN,
+}
+
+
 class Chip8(object):
     def __init__(self):
         self.registers = [0x00] * 16
@@ -86,9 +95,4 @@ class Chip8(object):
         word = self.fetch()
         instruction, args = self.decode(word)
 
-        def jump(address):
-            self.program_counter = address
-
-        OPCODES = { 0x1 : jump }
-
-        OPCODES[instruction](*args)
+        INSTRUCTION_SET[instruction](self, *args)
