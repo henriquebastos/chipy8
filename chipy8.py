@@ -54,6 +54,10 @@ def op_2NNN(cpu, address):
     cpu.stack.append(cpu.program_counter)
     cpu.program_counter = address
 
+def op_8XY0(cpu, X, Y):
+    'Store the value of register VY in register VX'
+    cpu.registers[X] = cpu.registers[Y]
+
 def op_ANNN(cpu, address):
     cpu.index_register = address
 
@@ -66,6 +70,7 @@ def op_F055(cpu, X):
 INSTRUCTION_SET = {
     0x1: op_1NNN,
     0x2: op_2NNN,
+    0x8000: op_8XY0,
     0xA: op_ANNN,
     0xF055: op_F055,
 }

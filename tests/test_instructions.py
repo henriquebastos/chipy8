@@ -18,6 +18,14 @@ class TestInstructios(TestCase):
         self.assertEqual(0x400, self.cpu.program_counter)
         self.assertListEqual([0x200], self.cpu.stack)
 
+    def test_8XY0(self):
+        X, Y = 0x2, 0x4
+        self.cpu.registers[Y] = 0x42
+        self.cpu.memory.load(ENTRY_POINT, [0x82, 0x40])
+        self.cpu.cycle()
+        self.assertEqual(self.cpu.registers[X],
+                         self.cpu.registers[Y])
+
     def test_ANNN(self):
         self.cpu.memory.load(ENTRY_POINT, [0xA4, 0x00])
         self.cpu.cycle()
