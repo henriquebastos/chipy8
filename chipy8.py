@@ -123,12 +123,15 @@ class Chip8(object):
     # INSTRUCTIONS
 
     def op_00EE(self):
+        'Return from a subroutine.'
         self.program_counter = self.stack.pop()
 
     def op_1NNN(self, address):
+        'Jump to address NNN.'
         self.program_counter = address
 
     def op_2NNN(self, address):
+        'Execute subroutine starting at address NNN.'
         self.stack.append(self.program_counter)
         self.program_counter = address
 
@@ -140,13 +143,15 @@ class Chip8(object):
             self.increment_program_counter()
 
     def op_8XY0(self, X, Y):
-        'Store the value of register VY in register VX'
+        'Store the value of register VY in register VX.'
         self.registers[X] = self.registers[Y]
 
     def op_ANNN(self, address):
+        'Store memory address NNN in register I.'
         self.index_register = address
 
     def op_F055(self, X):
+        'Store values of V0 to VX inclusive in mem starting at addr I.'
         X_inclusive = X + 1
         data = self.registers[0:X_inclusive]
         self.memory.load(self.index_register, data)
