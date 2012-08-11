@@ -17,6 +17,10 @@ class TestMemory(TestCase):
         self.assertRaises(ValueError,
                           self.memory.write_byte, 0x200, 0x100)
 
+    def test_load_must_receive_list_of_bytes(self):
+        self.assertRaises(ValueError,
+                          self.memory.load, 0x200, [0x100])
+
     def test_load(self):
         'Load a stream of bytes to memory starting on an address.'
         address = 0x200

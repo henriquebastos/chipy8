@@ -18,7 +18,7 @@ class Memory(object):
 
     def load(self, address, data):
         for offset, datum in enumerate(data):
-            self._stream[address + offset] = datum
+            self.write_byte(address + offset, datum)
 
     def read_word(self, address):
         high = self.read_byte(address) << 8
