@@ -26,6 +26,7 @@ class Memory(object):
         return high + low
 
 
+ENTRY_POINT = 0x200
 
 I   = lambda op: (op | 0x0FF0) ^ 0x0FF0 if 0x8000 <= op <= 0x9FFF else op >> 12
 X   = lambda op: ((op | 0xF0FF) ^ 0xF0FF) >> 8
@@ -75,3 +76,13 @@ class Chip8(object):
 
         if instruction >= 0xE:
             return instruction, X(op)
+
+    def fetch(self):
+        return self.memory.read_word(self.program_counter)
+
+    def cycle(self):
+        word = self.fetch()
+        opcode = self.decode(word)
+
+        #if opcode[0] == 0x1:
+        self.program_counter = opcode[1]
