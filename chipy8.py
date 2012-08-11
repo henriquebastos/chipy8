@@ -47,25 +47,6 @@ N   = lambda op: (op | 0xFFF0) ^ 0xFFF0
 NN  = lambda op: (op | 0xFF00) ^ 0xFF00
 NNN = lambda op: (op | 0xF000) ^ 0xF000
 
-def op_1NNN(cpu, address):
-    cpu.program_counter = address
-
-def op_2NNN(cpu, address):
-    cpu.stack.append(cpu.program_counter)
-    cpu.program_counter = address
-
-def op_8XY0(cpu, X, Y):
-    'Store the value of register VY in register VX'
-    cpu.registers[X] = cpu.registers[Y]
-
-def op_ANNN(cpu, address):
-    cpu.index_register = address
-
-def op_F055(cpu, X):
-    X_inclusive = X + 1
-    data = cpu.registers[0:X_inclusive]
-    cpu.memory.load(cpu.index_register, data)
-
 
 class Chip8(object):
     def __init__(self):
@@ -129,4 +110,25 @@ class Chip8(object):
         word = self.fetch()
         instruction, args = self.decode(word)
         self.execute(instruction, args)
+
+    # INSTRUCTIONS
+
+    def op_1NNN(self, address):
+        self.program_counter = address
+
+    def op_2NNN(self, address):
+        self.stack.append(self.program_counter)
+        self.program_counter = address
+
+    def op_8XY0(self, X, Y):
+        'Store the value of register VY in register VX'
+        self.registers[X] = self.registers[Y]
+
+    def op_ANNN(self, address):
+        self.index_register = address
+
+    def op_F055(self, X):
+        X_inclusive = X + 1
+        data = self.registers[0:X_inclusive]
+        self.memory.load(self.index_register, data)
 
