@@ -73,6 +73,7 @@ class Chip8(object):
             0x2   : self.op_2NNN,
             0x3   : self.op_3XNN,
             0x4   : self.op_4XNN,
+            0x5   : self.op_5XY0,
             0x8000: self.op_8XY0,
             0xA   : self.op_ANNN,
             0xF055: self.op_F055,
@@ -146,6 +147,13 @@ class Chip8(object):
     def op_4XNN(self, X, NN):
         'Skip the following instruction if the value of VX != NN.'
         if self.registers[X] != NN:
+            self.skip_next_instruction()
+        else:
+            self.increment_program_counter()
+
+    def op_5XY0(self, X, Y):
+        'Skip next instruction if the value of VX == the value of VY.'
+        if self.registers[X] == self.registers[Y]:
             self.skip_next_instruction()
         else:
             self.increment_program_counter()
