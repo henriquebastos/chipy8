@@ -12,4 +12,9 @@ class TestInstructios(TestCase):
         self.cpu.cycle()
         self.assertEqual(0x400, self.cpu.program_counter)
 
+    def test_2NNN(self):
+        self.cpu.memory.load(ENTRY_POINT, [0x24, 0x00])
+        self.cpu.cycle()
+        self.assertEqual(0x400, self.cpu.program_counter)
+        self.assertListEqual([0x200], self.cpu.stack)
 
