@@ -81,34 +81,34 @@ class TestOpcodeDecode(TestCase):
                          (0xD, (0x2, 0x0, 0x5)))
 
     def test_EX9E(self):
-        self.assertEqual(self.cpu.decode(0xE29E), (0xE, (0x2,)))
+        self.assertEqual(self.cpu.decode(0xE29E), (0xE09E, (0x2,)))
 
     def test_EXA1(self):
-        self.assertEqual(self.cpu.decode(0xEAA1), (0xE, (0xA,)))
+        self.assertEqual(self.cpu.decode(0xEAA1), (0xE0A1, (0xA,)))
 
     def test_FX07(self):
-        self.assertEqual(self.cpu.decode(0xF0A1), (0xF, (0x0,)))
+        self.assertEqual(self.cpu.decode(0xF0A1), (0xF0A1, (0x0,)))
 
     def test_FX0A(self):
-        self.assertEqual(self.cpu.decode(0xF10A), (0xF, (0x1,)))
+        self.assertEqual(self.cpu.decode(0xF10A), (0xF00A, (0x1,)))
 
     def test_FX15(self):
-        self.assertEqual(self.cpu.decode(0xF115), (0xF, (0x1,)))
+        self.assertEqual(self.cpu.decode(0xF115), (0xF015, (0x1,)))
 
     def test_FX18(self):
-        self.assertEqual(self.cpu.decode(0xF118), (0xF, (0x1,)))
+        self.assertEqual(self.cpu.decode(0xF118), (0xF018, (0x1,)))
 
     def test_FX1E(self):
-        self.assertEqual(self.cpu.decode(0xF11E), (0xF, (0x1,)))
+        self.assertEqual(self.cpu.decode(0xF11E), (0xF01E, (0x1,)))
 
     def test_FX29(self):
-        self.assertEqual(self.cpu.decode(0xF129), (0xF, (0x1,)))
+        self.assertEqual(self.cpu.decode(0xF129), (0xF029, (0x1,)))
 
     def test_FX33(self):
-        self.assertEqual(self.cpu.decode(0xF133), (0xF, (0x1,)))
+        self.assertEqual(self.cpu.decode(0xF133), (0xF033, (0x1,)))
 
     def test_FX55(self):
-        self.assertEqual(self.cpu.decode(0xF155), (0xF, (0x1,)))
+        self.assertEqual(self.cpu.decode(0xF155), (0xF055, (0x1,)))
 
     def test_FX65(self):
-        self.assertEqual(self.cpu.decode(0xF165), (0xF, (0x1,)))
+        self.assertEqual(self.cpu.decode(0xF165), (0xF065, (0x1,)))

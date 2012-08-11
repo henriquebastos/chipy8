@@ -33,7 +33,14 @@ class Memory(object):
 
 ENTRY_POINT = 0x200
 
-I   = lambda op: (op | 0x0FF0) ^ 0x0FF0 if 0x8000 <= op <= 0x9FFF else op >> 12
+def I(op):
+    if 0x8000 <= op <= 0x9FFF:
+        return (op | 0x0FF0) ^ 0x0FF0
+    elif op >= 0xE000:
+        return (op | 0x0F00) ^ 0x0F00
+    else:
+        return op >> 12
+
 X   = lambda op: ((op | 0xF0FF) ^ 0xF0FF) >> 8
 Y   = lambda op: ((op | 0xFF0F) ^ 0xFF0F) >> 4
 N   = lambda op: (op | 0xFFF0) ^ 0xFFF0
