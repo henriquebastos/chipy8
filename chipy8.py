@@ -68,11 +68,11 @@ class Chip8(object):
         self.sound_timer = 0
 
         self.INSTRUCTION_SET = {
-            0x1   : op_1NNN,
-            0x2   : op_2NNN,
-            0x8000: op_8XY0,
-            0xA   : op_ANNN,
-            0xF055: op_F055,
+            0x1   : self.op_1NNN,
+            0x2   : self.op_2NNN,
+            0x8000: self.op_8XY0,
+            0xA   : self.op_ANNN,
+            0xF055: self.op_F055,
         }
 
     def decode(self, op):
