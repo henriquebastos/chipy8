@@ -80,6 +80,7 @@ class Chip8(object):
             0x8001: self.op_8XY1,
             0x8002: self.op_8XY2,
             0x8003: self.op_8XY3,
+            0x8004: self.op_8XY4,
             0xA   : self.op_ANNN,
             0xF055: self.op_F055,
         }
@@ -191,6 +192,15 @@ class Chip8(object):
     def op_8XY3(self, X, Y):
         'Set VX to VX XOR VY.'
         self.registers[X] ^= self.registers[Y]
+        self.increment_program_counter()
+
+    def op_8XY4(self, X, Y):
+        '''Add the value of register VY to register VX
+           Set VF to 01 if a carry occurs
+           Set VF to 00 if a carry does not occur'''
+        value = self.registers[X] + self.registers[Y]
+        self.registers[X] = value % 256
+        self.registers[0xF] = 1 if value > 0xFF else 0
         self.increment_program_counter()
 
     def op_ANNN(self, address):
