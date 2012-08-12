@@ -136,6 +136,7 @@ class Chip8(object):
             0xF018: self.op_FX18,
             0xF01E: self.op_FX1E,
             0xF029: self.op_FX29,
+            0xF033: self.op_FX33,
             0xF055: self.op_F055,
         }
 
@@ -346,6 +347,16 @@ class Chip8(object):
         sprite = self.registers[X] % 16
         offset = sprite * FONT_LENGTH
         self.index_register = FONT_SPRITES_ADDRESS + offset
+        self.increment_program_counter()
+
+    def op_FX33(self, X):
+        '''
+        Store the binary-coded decimal equivalent of the value
+        stored in register VX at addresses I, I+1, and I+2
+        Example: VX=0xFF (255); I=2, I+1=5, I+2=5
+        '''
+        data = bcd(self.registers[X])
+        self.memory.load(self.index_register, data)
         self.increment_program_counter()
 
     def op_F055(self, X):

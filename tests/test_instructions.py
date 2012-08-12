@@ -244,6 +244,14 @@ class TestInstructios(TestCase):
         self.assertEqual(self.cpu.index_register, 0x50)
         self.assertEqual(self.cpu.program_counter, 0x202)
 
+    def test_FX33(self):
+        # 255 or 0xFF in VX
+        # I = 2, I+1 = 5, I+2 = 5
+        self.registers(V1=0xFF)
+        self.execute(0xF133)
+        data = self.cpu.memory.read(self.cpu.index_register, 0x3)
+        self.assertListEqual(data, [0x2, 0x5, 0x5])
+        self.assertEqual(self.cpu.program_counter, 0x202)
 
     def test_FX55(self):
         self.cpu.index_register = 0x400
