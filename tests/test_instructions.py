@@ -226,6 +226,21 @@ class TestInstructios(TestCase):
         self.assertEqual(self.cpu.index_register, 0x4FF)
         self.assertEqual(self.cpu.program_counter, 0x202)
 
+    def test_FX29_first_sprite(self):
+        self.registers(V2=0x0)
+        self.execute(0xF229)
+        self.assertEqual(self.cpu.index_register, 0x50)
+
+    def test_FX29_last_sprite(self):
+        self.registers(V2=0xF)
+        self.execute(0xF229)
+        self.assertEqual(self.cpu.index_register, 0x9B)
+
+    def test_FX29_wraparound(self):
+        self.registers(V2=0x10)
+        self.execute(0xF229)
+        self.assertEqual(self.cpu.index_register, 0x50)
+
     def test_FX55(self):
         self.cpu.index_register = 0x400
         self.execute(0xF555)

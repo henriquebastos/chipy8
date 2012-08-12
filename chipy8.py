@@ -35,6 +35,8 @@ class Memory(object):
 
 ENTRY_POINT = 0x200
 
+FONT_SPRITES_ADDRESS = 0x50
+FONT_LENGTH = 0x5
 FONT_SPRITES = [
     0xF0, 0x90, 0x90, 0x90, 0xF0, # 0
     0x20, 0x60, 0x20, 0x20, 0x70, # 1
@@ -114,6 +116,7 @@ class Chip8(object):
             0xF015: self.op_FX15,
             0xF018: self.op_FX18,
             0xF01E: self.op_FX1E,
+            0xF029: self.op_FX29,
             0xF055: self.op_F055,
         }
 
@@ -314,6 +317,16 @@ class Chip8(object):
     def op_FX1E(self, X):
         'Add the value stored in register VX to register I.'
         self.index_register += self.registers[X]
+        self.increment_program_counter()
+
+    def op_FX29(self, X):
+        '''
+        Set I to the memory address of the sprite data corresponding
+        to the hexadecimal digit stored in register VX.
+        '''
+        sprite = self.registers[X] % 16
+        offset = sprite * FONT_LENGTH
+        self.index_register = FONT_SPRITES_ADDRESS + offset
         self.increment_program_counter()
 
     def op_F055(self, X):
