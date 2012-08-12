@@ -219,6 +219,13 @@ class TestInstructios(TestCase):
         self.assertEqual(self.cpu.sound_timer, 0x42)
         self.assertEqual(self.cpu.program_counter, 0x202)
 
+    def test_FX1E(self):
+        self.registers(V2=0xFF)
+        self.cpu.index_register = 0x400
+        self.execute(0xF21E)
+        self.assertEqual(self.cpu.index_register, 0x4FF)
+        self.assertEqual(self.cpu.program_counter, 0x202)
+
     def test_FX55(self):
         self.cpu.index_register = 0x400
         self.execute(0xF555)

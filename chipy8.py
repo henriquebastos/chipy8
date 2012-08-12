@@ -93,6 +93,7 @@ class Chip8(object):
             0xF007: self.op_FX07,
             0xF015: self.op_FX15,
             0xF018: self.op_FX18,
+            0xF01E: self.op_FX1E,
             0xF055: self.op_F055,
         }
 
@@ -288,6 +289,11 @@ class Chip8(object):
     def op_FX18(self, X):
         'Set the sound timer to the value of register VX.'
         self.sound_timer = self.registers[X]
+        self.increment_program_counter()
+
+    def op_FX1E(self, X):
+        'Add the value stored in register VX to register I.'
+        self.index_register += self.registers[X]
         self.increment_program_counter()
 
     def op_F055(self, X):
