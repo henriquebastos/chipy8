@@ -81,6 +81,7 @@ class Chip8(object):
             0x8002: self.op_8XY2,
             0x8003: self.op_8XY3,
             0x8004: self.op_8XY4,
+            0x8005: self.op_8XY5,
             0xA   : self.op_ANNN,
             0xF055: self.op_F055,
         }
@@ -201,6 +202,17 @@ class Chip8(object):
         value = self.registers[X] + self.registers[Y]
         self.registers[X] = value % 256
         self.registers[0xF] = 1 if value > 0xFF else 0
+        self.increment_program_counter()
+
+    def op_8XY5(self, X, Y):
+        '''
+        Subtract the value of register VY from register VX
+        Set VF to 00 if a borrow occurs
+        Set VF to 01 if a borrow does not occur
+        '''
+        value = self.registers[X] - self.registers[Y]
+        self.registers[X] = value % 256
+        self.registers[0xF] = 0 if value < 0 else 1
         self.increment_program_counter()
 
     def op_ANNN(self, address):
