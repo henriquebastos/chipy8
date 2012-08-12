@@ -189,6 +189,11 @@ class TestInstructios(TestCase):
         self.assertEqual(0x400, self.cpu.index_register)
         self.assertEqual(ENTRY_POINT+0x2, self.cpu.program_counter)
 
+    def test_BNNN(self):
+        self.registers(V0=0x2)
+        self.execute(0xB400)
+        self.assertEqual(self.cpu.program_counter, 0x402)
+
     def test_FX55(self):
         self.cpu.index_register = 0x400
         self.execute(0xF555)

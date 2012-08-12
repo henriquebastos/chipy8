@@ -87,6 +87,7 @@ class Chip8(object):
             0x800E: self.op_8XYE,
             0x9000: self.op_9XY0,
             0xA   : self.op_ANNN,
+            0xB   : self.op_BNNN,
             0xF055: self.op_F055,
         }
 
@@ -259,6 +260,10 @@ class Chip8(object):
         'Store memory address NNN in register I.'
         self.index_register = address
         self.increment_program_counter()
+
+    def op_BNNN(self, address):
+        'Jump to address NNN + V0.'
+        self.program_counter = address + self.registers[0]
 
     def op_F055(self, X):
         'Store values of V0 to VX inclusive in mem starting at addr I.'
