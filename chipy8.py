@@ -90,6 +90,7 @@ class Chip8(object):
             0xA   : self.op_ANNN,
             0xB   : self.op_BNNN,
             0xC   : self.op_CXNN,
+            0xF007: self.op_FX07,
             0xF055: self.op_F055,
         }
 
@@ -270,6 +271,11 @@ class Chip8(object):
     def op_CXNN(self, X, NN):
         'Set VX to a random number with a mask of NN.'
         self.registers[X] = randint(0, 0xFF) & NN
+        self.increment_program_counter()
+
+    def op_FX07(self, X):
+        'Store the current value of the delay timer in register VX.'
+        self.registers[X] = self.delay_timer
         self.increment_program_counter()
 
     def op_F055(self, X):
