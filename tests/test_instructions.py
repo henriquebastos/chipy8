@@ -261,3 +261,17 @@ class TestInstructios(TestCase):
         self.assertEqual(registers, in_memory)
         self.assertEqual(ENTRY_POINT+0x2, self.cpu.program_counter)
 
+    def test_FX65_all(self):
+        values = range(16)
+        self.cpu.index_register = 0x400
+        self.cpu.memory.load(self.cpu.index_register, values)
+        self.execute(0xFF65)
+        self.assertListEqual(values, self.cpu.registers)
+        self.assertEqual(self.cpu.program_counter, 0x202)
+
+    def test_FX65_one(self):
+        self.cpu.index_register = 0x400
+        self.cpu.memory.write_byte(self.cpu.index_register, 0xFF)
+        self.execute(0xFF65)
+        self.assertListEqual(self.cpu.registers, [0xFF] + [0] * 15)
+        self.assertEqual(self.cpu.program_counter, 0x202)

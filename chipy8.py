@@ -138,6 +138,7 @@ class Chip8(object):
             0xF029: self.op_FX29,
             0xF033: self.op_FX33,
             0xF055: self.op_F055,
+            0xF065: self.op_FX65,
         }
 
     def decode(self, op):
@@ -365,3 +366,13 @@ class Chip8(object):
         self.memory.load(self.index_register, data)
         self.increment_program_counter()
 
+    def op_FX65(self, X):
+        '''
+        Fill registers V0 to VX inclusive with the values stored in
+        memory starting at address I
+        I is set to I + X + 1 after operation
+        '''
+        data = self.memory.read(self.index_register, X+1)
+        for R in range(X+1):
+            self.registers[R] = data[R]
+        self.increment_program_counter()
