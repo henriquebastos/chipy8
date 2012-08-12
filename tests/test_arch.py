@@ -1,6 +1,7 @@
 # coding: UTF-8
 from unittest import TestCase
 from chipy8 import Chip8
+from chipy8 import FONT_SPRITES
 
 
 class TestChip8Architecture(TestCase):
@@ -42,3 +43,10 @@ class TestChip8Architecture(TestCase):
     def test_keyboard(self):
         'Chip8 has a hex keyboard with 16 keys.'
         self.assertEqual(16, len(self.cpu.keyboard))
+
+    def test_font_sprites(self):
+        'Chip8 has 16 preset sprites corresponding from 0 to F.'
+        in_memory = self.cpu.memory.read(0x50, len(FONT_SPRITES))
+        self.assertEqual(FONT_SPRITES, in_memory)
+
+
