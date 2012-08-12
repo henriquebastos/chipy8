@@ -82,6 +82,7 @@ class Chip8(object):
             0x8003: self.op_8XY3,
             0x8004: self.op_8XY4,
             0x8005: self.op_8XY5,
+            0x8006: self.op_8XY6,
             0xA   : self.op_ANNN,
             0xF055: self.op_F055,
         }
@@ -213,6 +214,15 @@ class Chip8(object):
         value = self.registers[X] - self.registers[Y]
         self.registers[X] = value % 256
         self.registers[0xF] = 0 if value < 0 else 1
+        self.increment_program_counter()
+
+    def op_8XY6(self, X, Y):
+        '''
+        Store the value of register VY shifted right one bit in  VX
+        Set VF to the least significant bit prior to the shift
+        '''
+        self.registers[X] = self.registers[Y] >> 1
+        self.registers[0xF] = self.registers[Y] & 1
         self.increment_program_counter()
 
     def op_ANNN(self, address):

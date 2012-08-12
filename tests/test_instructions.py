@@ -132,6 +132,20 @@ class TestInstructios(TestCase):
         self.assertEqual(self.cpu.registers[0xF], 0x0)
         self.assertEqual(self.cpu.program_counter, 0x202)
 
+    def test_8XY6_one(self):
+        self.registers(V2=0xF)
+        self.execute(0x8126)
+        self.assertEqual(self.cpu.registers[1], 0x7)
+        self.assertEqual(self.cpu.registers[0xF], 0x1)
+        self.assertEqual(self.cpu.program_counter, 0x202)
+
+    def test_8XY6_zero(self):
+        self.registers(V2=0xE)
+        self.execute(0x8126)
+        self.assertEqual(self.cpu.registers[1], 0x7)
+        self.assertEqual(self.cpu.registers[0xF], 0x0)
+        self.assertEqual(self.cpu.program_counter, 0x202)
+
     def test_ANNN(self):
         self.execute(0xA400)
         self.assertEqual(0x400, self.cpu.index_register)
