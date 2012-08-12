@@ -62,6 +62,11 @@ class TestInstructios(TestCase):
         self.execute(0x5230)
         self.assertEqual(ENTRY_POINT+0x2, self.cpu.program_counter)
 
+    def test_6XNN(self):
+        self.execute(0x6342)
+        self.assertEqual(self.cpu.registers[3], 0x42)
+        self.assertEqual(self.cpu.program_counter, 0x202)
+
     def test_8XY0(self):
         self.registers(V2=0x00, V4=0x42)
         self.execute(0x8240)
