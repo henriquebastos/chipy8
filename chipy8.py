@@ -79,6 +79,7 @@ class Chip8(object):
             0x8000: self.op_8XY0,
             0x8001: self.op_8XY1,
             0x8002: self.op_8XY2,
+            0x8003: self.op_8XY3,
             0xA   : self.op_ANNN,
             0xF055: self.op_F055,
         }
@@ -185,6 +186,11 @@ class Chip8(object):
     def op_8XY2(self, X, Y):
         'Set VX to VX AND VY'
         self.registers[X] &= self.registers[Y]
+        self.increment_program_counter()
+
+    def op_8XY3(self, X, Y):
+        'Set VX to VX XOR VY.'
+        self.registers[X] ^= self.registers[Y]
         self.increment_program_counter()
 
     def op_ANNN(self, address):
