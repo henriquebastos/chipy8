@@ -2,6 +2,25 @@
 from random import randint
 
 
+def bcd(number):
+    if number > 255:
+        raise ValueError
+
+    result = []
+    n = number
+
+    for unit in [100, 10]:
+        count = 0
+        while(n >= unit):
+            n -= unit
+            count += 1
+        result.append(count)
+    # push the remainder
+    result.append(n)
+
+    return result
+
+
 class Memory(object):
     def __init__(self):
         self._stream = [0x00] * 4096
