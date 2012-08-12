@@ -91,6 +91,7 @@ class Chip8(object):
             0xB   : self.op_BNNN,
             0xC   : self.op_CXNN,
             0xF007: self.op_FX07,
+            0xF015: self.op_FX15,
             0xF055: self.op_F055,
         }
 
@@ -278,6 +279,11 @@ class Chip8(object):
         self.registers[X] = self.delay_timer
         self.increment_program_counter()
 
+    def op_FX15(self, X):
+        'Set the delay timer to the value of register VX.'
+        self.delay_timer = self.registers[X]
+        self.increment_program_counter()
+        
     def op_F055(self, X):
         'Store values of V0 to VX inclusive in mem starting at addr I.'
         data = self.registers[0:X+1]
