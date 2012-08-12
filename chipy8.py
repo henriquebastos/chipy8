@@ -75,6 +75,7 @@ class Chip8(object):
             0x4   : self.op_4XNN,
             0x5   : self.op_5XY0,
             0x6   : self.op_6XNN,
+            0x7   : self.op_7XNN,
             0x8000: self.op_8XY0,
             0xA   : self.op_ANNN,
             0xF055: self.op_F055,
@@ -162,6 +163,11 @@ class Chip8(object):
     def op_6XNN(self, X, NN):
         'Store number NN in register VX.'
         self.registers[X] = NN
+        self.increment_program_counter()
+
+    def op_7XNN(self, X, NN):
+        'Add the value NN to register VX.'
+        self.registers[X] = (self.registers[X] + NN) % 256
         self.increment_program_counter()
 
     def op_8XY0(self, X, Y):
