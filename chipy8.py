@@ -1,4 +1,5 @@
 # coding: utf-8
+from random import randint
 
 
 class Memory(object):
@@ -88,6 +89,7 @@ class Chip8(object):
             0x9000: self.op_9XY0,
             0xA   : self.op_ANNN,
             0xB   : self.op_BNNN,
+            0xC   : self.op_CXNN,
             0xF055: self.op_F055,
         }
 
@@ -264,6 +266,11 @@ class Chip8(object):
     def op_BNNN(self, address):
         'Jump to address NNN + V0.'
         self.program_counter = address + self.registers[0]
+
+    def op_CXNN(self, X, NN):
+        'Set VX to a random number with a mask of NN.'
+        self.registers[X] = randint(0, 0xFF) & NN
+        self.increment_program_counter()
 
     def op_F055(self, X):
         'Store values of V0 to VX inclusive in mem starting at addr I.'

@@ -1,6 +1,7 @@
 # coding: utf-8
 from unittest import TestCase
 from chipy8 import Chip8, ENTRY_POINT
+from mock import patch
 
 
 class TestInstructios(TestCase):
@@ -193,6 +194,12 @@ class TestInstructios(TestCase):
         self.registers(V0=0x2)
         self.execute(0xB400)
         self.assertEqual(self.cpu.program_counter, 0x402)
+
+    def test_CXNN(self):
+        with patch('chipy8.randint', return_value=0x55) as m:
+            self.execute(0xC233)
+        self.assertEqual(self.cpu.registers[2], 0x11)
+        self.assertEqual(self.cpu.program_counter, 0x202)
 
     def test_FX55(self):
         self.cpu.index_register = 0x400
