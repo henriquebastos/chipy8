@@ -174,6 +174,16 @@ class TestInstructios(TestCase):
         self.assertEqual(self.cpu.registers[0xF], 0x0)
         self.assertEqual(self.cpu.program_counter, 0x202)
 
+    def test_9XY0_equal_dont_skip(self):
+        self.registers(V6=0x42, V8=0x42)
+        self.execute(0x9680)
+        self.assertEqual(self.cpu.program_counter, 0x202)
+
+    def test_9XY0_unequal_skip(self):
+        self.registers(V6=0x42, V8=0x24)
+        self.execute(0x9680)
+        self.assertEqual(self.cpu.program_counter, 0x204)
+
     def test_ANNN(self):
         self.execute(0xA400)
         self.assertEqual(0x400, self.cpu.index_register)
