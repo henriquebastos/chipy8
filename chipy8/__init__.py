@@ -377,3 +377,6 @@ class Chip8(object):
         for R in range(X+1):
             self.registers[R] = data[R]
         self.increment_program_counter()
+
+def main():
+    print "Hello Chipy!"
