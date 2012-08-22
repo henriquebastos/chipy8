@@ -33,13 +33,6 @@ def syntax(tokens):
 def semantic(ast):
     opcodes = []
     reg = ast[0]['children'][1]['value']
-    if reg == 'VA':
-        arg1 = 0x6a
-    elif reg == 'VB':
-        arg1 = 0x6b
-    elif reg == 'VC':
-        arg1 = 0x6c
-    elif reg == 'VD':
-        arg1 = 0x6d
+    arg1 = 0x60 + int(reg[1], 16)
     arg2 = int(ast[0]['children'][3]['value'])
     return [arg1,arg2]
