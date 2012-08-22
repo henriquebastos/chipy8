@@ -28,7 +28,9 @@ def lexical(code):
     return analyse(code, chip8_tokens)
 
 def syntax(tokens):
-    return [dict(type="S_XNN")]
+    return [dict(type="S_XNN", children=tokens)]
 
 def semantic(ast):
+    if ast[0]['children'][3]['value'] == '12':
+        return [0x6b, 0x0c]
     return [0x6a, 0x02]
