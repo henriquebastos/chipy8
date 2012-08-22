@@ -31,10 +31,15 @@ def syntax(tokens):
     return [dict(type="S_XNN", children=tokens)]
 
 def semantic(ast):
-    if ast[0]['children'][3]['value'] == '12':
-        if ast[0]['children'][1]['value'] == 'VD':
-            return [0x6d, 0x0c]
-        return [0x6b, 0x0c]
-    elif ast[0]['children'][3]['value'] == '63':
-        return [0x6c, 0x3f]
-    return [0x6a, 0x02]
+    opcodes = []
+    reg = ast[0]['children'][1]['value']
+    if reg == 'VA':
+        arg1 = 0x6a
+    elif reg == 'VB':
+        arg1 = 0x6b
+    elif reg == 'VC':
+        arg1 = 0x6c
+    elif reg == 'VD':
+        arg1 = 0x6d
+    arg2 = int(ast[0]['children'][3]['value'])
+    return [arg1,arg2]

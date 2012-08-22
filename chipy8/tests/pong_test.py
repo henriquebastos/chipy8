@@ -10,7 +10,7 @@ class PongTest(unittest.TestCase):
 
     def test_asm_compiler(self):
         f = open ('fixtures/PONG.SRC')
-        code = f.read()
+        code = f.read().split('\n')[57]
         f.close()
         tokens = lexical(code)
         ast = syntax(tokens)
@@ -20,7 +20,6 @@ class PongTest(unittest.TestCase):
         content = f.read()
         c = content[:len(bin)]
         self.assertEquals(c,bin)
-
 
     def test_fixbug_with_marker_dt_loop(self):
         code = 'DT_loop'
