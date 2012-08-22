@@ -47,3 +47,16 @@ class LdTest(unittest.TestCase):
         self.assertEquals('S_XNN', ast[0]['type'])
         code = semantic(ast)
         self.assertEquals(code, [0x6c, 0x3f])
+
+    def test_ld_with_register_d_and_twelve(self):
+        tokens = lexical('LD VD, 12')
+        self.assertEquals(4, len(tokens))
+        self.assertEquals('T_INSTRUCTION', tokens[0]['type'])
+        self.assertEquals('T_REGISTER', tokens[1]['type'])
+        self.assertEquals('T_SEPARATOR', tokens[2]['type'])
+        self.assertEquals('T_DECIMAL_ARGUMENT', tokens[3]['type'])
+        ast = syntax(tokens)
+        self.assertEquals(1, len(ast))
+        self.assertEquals('S_XNN', ast[0]['type'])
+        code = semantic(ast)
+        self.assertEquals(code, [0x6d, 0x0c])

@@ -32,6 +32,8 @@ def syntax(tokens):
 
 def semantic(ast):
     if ast[0]['children'][3]['value'] == '12':
+        if ast[0]['children'][1]['value'] == 'VD':
+            return [0x6d, 0x0c]
         return [0x6b, 0x0c]
     elif ast[0]['children'][3]['value'] == '63':
         return [0x6c, 0x3f]
