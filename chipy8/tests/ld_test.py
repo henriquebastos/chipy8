@@ -18,3 +18,5 @@ class LdTest(unittest.TestCase):
         ast = syntax(tokens)
         self.assertEquals(1 , len(ast))
         self.assertEquals('S_XNN', ast[0]['type'])
+        code = semantic(ast)
+        self.assertEquals(code, [0x6a, 0x02])

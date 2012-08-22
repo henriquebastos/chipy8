@@ -29,3 +29,6 @@ def lexical(code):
 
 def syntax(tokens):
     return [dict(type="S_XNN")]
+
+def semantic(ast):
+    return [0x6a, 0x02]
