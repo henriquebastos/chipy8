@@ -2,7 +2,6 @@
 
 import unittest
 
-import pynes
 from chipy8.compiler import lexical, syntax, semantic
 
 class PongTest(unittest.TestCase):
