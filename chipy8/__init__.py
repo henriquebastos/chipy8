@@ -133,6 +133,7 @@ class Chip8(object):
             0xB   : self.op_BNNN,
             0xC   : self.op_CXNN,
             0xE09E: self.op_EX9E,
+            0xE0A1: self.op_EXA1,
             0xF007: self.op_FX07,
             0xF015: self.op_FX15,
             0xF018: self.op_FX18,
@@ -325,6 +326,13 @@ class Chip8(object):
     def op_EX9E(self, X):
         key = self.registers[X]
         if self.keyboard[key]:
+            self.skip_next_instruction()
+        else:
+            self.increment_program_counter()
+
+    def op_EXA1(self, X):
+        key = self.registers[X]
+        if not self.keyboard[key]:
             self.skip_next_instruction()
         else:
             self.increment_program_counter()
