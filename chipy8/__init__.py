@@ -135,6 +135,7 @@ class Chip8(object):
             0xE09E: self.op_EX9E,
             0xE0A1: self.op_EXA1,
             0xF007: self.op_FX07,
+            0xF00A: self.op_FX0A,
             0xF015: self.op_FX15,
             0xF018: self.op_FX18,
             0xF01E: self.op_FX1E,
@@ -186,6 +187,9 @@ class Chip8(object):
 
     def skip_next_instruction(self):
         self.program_counter += 0x4
+
+    def wait_for_keypress(self):
+        raise NotImplementedError()
 
     # INSTRUCTIONS
 
@@ -336,6 +340,12 @@ class Chip8(object):
             self.skip_next_instruction()
         else:
             self.increment_program_counter()
+
+    def op_FX0A(self, X):
+        key = self.wait_for_keypress()
+        self.keyboard[key] = True
+        self.registers[X] = key
+        self.increment_program_counter()
 
     def op_FX07(self, X):
         'Store the current value of the delay timer in register VX.'
