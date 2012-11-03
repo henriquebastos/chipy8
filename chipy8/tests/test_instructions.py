@@ -1,6 +1,6 @@
 # coding: utf-8
 from unittest import TestCase
-from chipy8 import Chip8, ENTRY_POINT
+from chipy8 import Chip8, ENTRY_POINT, FONT_BEGIN, FONT_LENGTH
 from mock import patch
 
 
@@ -17,6 +17,16 @@ class TestInstructios(TestCase):
         self.cpu.memory.load(at, data)
         self.cpu.program_counter = at
         self.cpu.cycle()
+
+    def assertDrawn(self, sprite, VX, VY):
+        WIDTH = 64
+        buffer = []
+        x, y = self.cpu.registers[VX], self.cpu.registers[VY]
+        height = len(sprite)
+
+        for i in range(height):
+            buffer.append(self.cpu.screen[((y + i) * WIDTH) + x])
+        self.assertListEqual(sprite, buffer)
 
     def test_00EE(self):
         self.cpu.stack.append(0x200)
@@ -199,6 +209,25 @@ class TestInstructios(TestCase):
         with patch('chipy8.randint', return_value=0x55) as m:
             self.execute(0xC233)
         self.assertEqual(self.cpu.registers[2], 0x11)
+        self.assertEqual(self.cpu.program_counter, 0x202)
+
+    def test_DXYN_no_collision(self):
+        self.cpu.index_register = FONT_BEGIN
+        self.registers(V0=0, V1=0)
+        self.execute(0xD005)
+        sprite_0 = self.cpu.memory.read(FONT_BEGIN, FONT_LENGTH)
+        self.assertDrawn(sprite_0, 0, 1)
+        self.assertFalse(self.cpu.registers[0xF])
+        self.assertEqual(self.cpu.program_counter, 0x202)
+
+    def test_DXYN_with_collision(self):
+        self.cpu.screen[0] = 0xFF
+        self.cpu.index_register = FONT_BEGIN
+        self.registers(V0=0, V1=0)
+        self.execute(0xD001)
+        sprite = [self.cpu.memory.read_byte(FONT_BEGIN)]
+        self.assertDrawn(sprite, 0, 1)
+        self.assertTrue(self.cpu.registers[0xF])
         self.assertEqual(self.cpu.program_counter, 0x202)
 
     def test_EX9E_do_not_skip(self):

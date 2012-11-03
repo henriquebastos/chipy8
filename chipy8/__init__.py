@@ -56,6 +56,7 @@ ENTRY_POINT = 0x200
 
 FONT_SPRITES_ADDRESS = 0x50
 FONT_LENGTH = 0x5
+FONT_BEGIN = 0x50
 FONT_SPRITES = [
     0xF0, 0x90, 0x90, 0x90, 0xF0,  # 0
     0x20, 0x60, 0x20, 0x20, 0x70,  # 1
@@ -132,6 +133,7 @@ class Chip8(object):
             0xA   : self.op_ANNN,
             0xB   : self.op_BNNN,
             0xC   : self.op_CXNN,
+            0xD   : self.op_DXYN,
             0xE09E: self.op_EX9E,
             0xE0A1: self.op_EXA1,
             0xF007: self.op_FX07,
@@ -325,6 +327,20 @@ class Chip8(object):
     def op_CXNN(self, X, NN):
         'Set VX to a random number with a mask of NN.'
         self.registers[X] = randint(0, 0xFF) & NN
+        self.increment_program_counter()
+
+    def op_DXYN(self, VX, VY, N):
+        WIDTH = 64
+        x = self.registers[VX]
+        y = self.registers[VY]
+        sprite = self.memory.read(self.index_register, N)
+        VF = 0
+
+        for row, data in enumerate(sprite):
+            i = ((y + row) * WIDTH) + x
+            VF |= self.screen[i] & data
+            self.screen[i] = data
+        self.registers[0xF] = bool(VF)
         self.increment_program_counter()
 
     def op_EX9E(self, X):
