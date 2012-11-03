@@ -201,6 +201,18 @@ class TestInstructios(TestCase):
         self.assertEqual(self.cpu.registers[2], 0x11)
         self.assertEqual(self.cpu.program_counter, 0x202)
 
+    def test_EX9E_do_not_skip(self):
+        self.registers(V1=0xF)
+        self.cpu.keyboard[0xF] = False
+        self.execute(0xE19E)
+        self.assertEqual(self.cpu.program_counter, 0x202)
+
+    def test_EX9E_skip_next(self):
+        self.registers(V1=0xF)
+        self.cpu.keyboard[0xF] = True
+        self.execute(0xE19E)
+        self.assertEqual(self.cpu.program_counter, 0x204)
+
     def test_FX07(self):
         self.cpu.delay_timer = 0x42
         self.execute(0xF107)

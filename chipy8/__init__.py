@@ -132,6 +132,7 @@ class Chip8(object):
             0xA   : self.op_ANNN,
             0xB   : self.op_BNNN,
             0xC   : self.op_CXNN,
+            0xE09E: self.op_EX9E,
             0xF007: self.op_FX07,
             0xF015: self.op_FX15,
             0xF018: self.op_FX18,
@@ -320,6 +321,13 @@ class Chip8(object):
         'Set VX to a random number with a mask of NN.'
         self.registers[X] = randint(0, 0xFF) & NN
         self.increment_program_counter()
+
+    def op_EX9E(self, X):
+        key = self.registers[X]
+        if self.keyboard[key]:
+            self.skip_next_instruction()
+        else:
+            self.increment_program_counter()
 
     def op_FX07(self, X):
         'Store the current value of the delay timer in register VX.'
