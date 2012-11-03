@@ -18,15 +18,17 @@ class TestInstructios(TestCase):
         self.cpu.program_counter = at
         self.cpu.cycle()
 
-    def assertDrawn(self, sprite, VX, VY):
-        WIDTH = 64
-        buffer = []
-        x, y = self.cpu.registers[VX], self.cpu.registers[VY]
-        height = len(sprite)
+    def font(self, value):
+        address = FONT_BEGIN + (value * FONT_LENGTH)
+        return self.cpu.memory.read(address, FONT_LENGTH)
 
-        for i in range(height):
-            buffer.append(self.cpu.screen[((y + i) * WIDTH) + x])
-        self.assertListEqual(sprite, buffer)
+    def collision(self):
+        return self.cpu.registers[0xF]
+
+    def assertDrawn(self, sprite, VX, VY):
+        x, y = self.cpu.registers[VX], self.cpu.registers[VY]
+        region = self.cpu.screen.get(x, y, len(sprite))
+        self.assertListEqual(sprite, region)
 
     def test_00EE(self):
         self.cpu.stack.append(0x200)
@@ -215,19 +217,17 @@ class TestInstructios(TestCase):
         self.cpu.index_register = FONT_BEGIN
         self.registers(V0=0, V1=0)
         self.execute(0xD005)
-        sprite_0 = self.cpu.memory.read(FONT_BEGIN, FONT_LENGTH)
-        self.assertDrawn(sprite_0, 0, 1)
-        self.assertFalse(self.cpu.registers[0xF])
+        self.assertDrawn(self.font(0), 0, 1)
+        self.assertFalse(self.collision())
         self.assertEqual(self.cpu.program_counter, 0x202)
 
     def test_DXYN_with_collision(self):
-        self.cpu.screen[0] = 0xFF
+        self.cpu.screen.draw([0xFF], 0, 0)
         self.cpu.index_register = FONT_BEGIN
         self.registers(V0=0, V1=0)
-        self.execute(0xD001)
-        sprite = [self.cpu.memory.read_byte(FONT_BEGIN)]
-        self.assertDrawn(sprite, 0, 1)
-        self.assertTrue(self.cpu.registers[0xF])
+        self.execute(0xD005)
+        self.assertDrawn(self.font(0), 0, 1)
+        self.assertTrue(self.collision())
         self.assertEqual(self.cpu.program_counter, 0x202)
 
     def test_EX9E_do_not_skip(self):

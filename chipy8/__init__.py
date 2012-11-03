@@ -52,6 +52,33 @@ class Memory(object):
         return self._stream[start:stop]
 
 
+class Screen(list):
+    WIDTH = 64
+    HEIGHT = 32
+
+    def __init__(self):
+        super(Screen, self).__init__([0x00] * self.WIDTH * self.HEIGHT)
+
+    def _index(self, x, y):
+        return (y * self.WIDTH) + x
+
+    def draw(self, sprite, x, y):
+        collision = 0
+
+        for row, pixels in enumerate(sprite):
+            i = self._index(x, y + row)
+            collision |= self[i] & pixels
+            self[i] = pixels
+
+        return collision
+
+    def get(self, x, y, height=1):
+        buffer = []
+        for i in range(height):
+            buffer.append(self[self._index(x, y+i)])
+        return buffer
+
+
 ENTRY_POINT = 0x200
 
 FONT_SPRITES_ADDRESS = 0x50
@@ -104,7 +131,7 @@ class Chip8(object):
         # 0x200-0xFFF - Program ROM and work RAM
         self.memory.load(0x50, FONT_SPRITES)
 
-        self.screen = [0x00] * 32 * 64
+        self.screen = Screen()
         self.keyboard = [0x00] * 16
         self.stack = []
 
@@ -330,17 +357,11 @@ class Chip8(object):
         self.increment_program_counter()
 
     def op_DXYN(self, VX, VY, N):
-        WIDTH = 64
         x = self.registers[VX]
         y = self.registers[VY]
         sprite = self.memory.read(self.index_register, N)
-        VF = 0
-
-        for row, data in enumerate(sprite):
-            i = ((y + row) * WIDTH) + x
-            VF |= self.screen[i] & data
-            self.screen[i] = data
-        self.registers[0xF] = bool(VF)
+        collision = self.screen.draw(sprite, x, y)
+        self.registers[0xF] = bool(collision)
         self.increment_program_counter()
 
     def op_EX9E(self, X):
