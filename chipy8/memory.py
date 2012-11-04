@@ -29,7 +29,7 @@ class Memory(object):
     def __init__(self):
         # 0x000-0x1FF - Chip 8 interpreter (contains font set in emu)
         # 0x200-0xFFF - Program ROM and work RAM
-        self._stream = [0x00] * self.MEM_SIZE
+        self._stream = bytearray(self.MEM_SIZE)
 
         # 0x050-0x0A0 - Used for the built in 4x5 pixel font set (0-F)
         self.load(FONT_ADDRESS, FONT_SPRITES)

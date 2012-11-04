@@ -25,12 +25,12 @@ class TestInstructios(TestCase):
     def assertDrawn(self, sprite, VX, VY):
         x, y = self.cpu.registers[VX], self.cpu.registers[VY]
         region = self.cpu.screen.get(x, y, len(sprite))
-        self.assertListEqual(sprite, region)
+        self.assertItemsEqual(sprite, region)
 
     def test_00EE(self):
         self.cpu.stack.append(0x200)
         self.execute(0x00EE, at=0x400)
-        self.assertListEqual([], self.cpu.stack)
+        self.assertItemsEqual([], self.cpu.stack)
         self.assertEqual(0x200, self.cpu.program_counter)
 
     def test_1NNN(self):
@@ -40,7 +40,7 @@ class TestInstructios(TestCase):
     def test_2NNN(self):
         self.execute(0x2400)
         self.assertEqual(0x400, self.cpu.program_counter)
-        self.assertListEqual([0x200], self.cpu.stack)
+        self.assertItemsEqual([0x200], self.cpu.stack)
 
     def test_3XNN_equal(self):
         self.registers(V5=0x42)
@@ -308,7 +308,7 @@ class TestInstructios(TestCase):
         self.registers(V1=0xFF)
         self.execute(0xF133)
         data = self.cpu.memory.read(self.cpu.index_register, 0x3)
-        self.assertListEqual(data, [0x2, 0x5, 0x5])
+        self.assertItemsEqual(data, [0x2, 0x5, 0x5])
         self.assertEqual(self.cpu.program_counter, 0x202)
 
     def test_FX55(self):
@@ -316,7 +316,7 @@ class TestInstructios(TestCase):
         self.execute(0xF555)
         registers = self.cpu.registers[:5+1]
         in_memory = self.cpu.memory.read(0x400, len(registers))
-        self.assertEqual(registers, in_memory)
+        self.assertItemsEqual(registers, in_memory)
         self.assertEqual(0x202, self.cpu.program_counter)
 
     def test_FX65_all(self):
@@ -324,7 +324,7 @@ class TestInstructios(TestCase):
         self.cpu.index_register = 0x400
         self.cpu.memory.load(self.cpu.index_register, values)
         self.execute(0xFF65)
-        self.assertListEqual(values, self.cpu.registers)
+        self.assertItemsEqual(values, self.cpu.registers)
         self.assertEqual(self.cpu.program_counter, 0x202)
 
     def test_FX65_one(self):
