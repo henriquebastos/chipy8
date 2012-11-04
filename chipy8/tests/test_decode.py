@@ -1,6 +1,6 @@
 # coding: UTF-8
 from unittest import TestCase
-from chipy8 import Chip8
+from chipy8.chip8 import Chip8
 
 
 class TestOpcodeDecode(TestCase):

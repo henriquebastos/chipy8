@@ -253,7 +253,7 @@ class TestInstructios(TestCase):
         self.assertEqual(self.cpu.program_counter, 0x202)
 
     def test_FX0A(self):
-        with patch('chipy8.Chip8.wait_for_keypress', return_value=0x3):
+        with patch('chipy8.chip8.Chip8.wait_for_keypress', return_value=0x3):
             self.execute(0xFF0A)
         print self.cpu.keyboard
         self.assertTrue(self.cpu.keyboard[0x3])
