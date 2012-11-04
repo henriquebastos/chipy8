@@ -104,10 +104,13 @@ class Screen(list):
     def draw(self, sprite, x, y):
         collision = 0
 
-        for row, pixels in enumerate(sprite):
-            i = self._index(x, y + row)
-            collision |= self[i] & pixels
-            self[i] = pixels
+        for sprite_y, sprite_pixels in enumerate(sprite):
+            pixels = self.unpack_pixels(sprite_pixels)
+
+            for sprite_x, pixel in enumerate(pixels):
+                i = self._index(x + sprite_x, y + sprite_y)
+                collision |= self[i] & pixel
+                self[i] = pixel
 
         return collision
 
