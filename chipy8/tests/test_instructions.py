@@ -13,7 +13,7 @@ class TestInstructios(TestCase):
         for r, datum in registers.items():
             self.cpu.registers[int(r[-1])] = datum
 
-    def execute(self, op, at=ENTRY_POINT):
+    def execute(self, op, at=Chip8.ENTRY_POINT):
         data = [op >> 8, ((op | 0xFF00) ^ 0xFF00)]
         self.cpu.memory.load(at, data)
         self.cpu.program_counter = at

@@ -38,14 +38,18 @@ NNN = lambda op: (op | 0xF000) ^ 0xF000
 
 
 class Chip8(object):
+    ENTRY_POINT = 0x200
+    REG_COUNT = 16
+    KEY_COUNT = 16
+
     def __init__(self):
-        self.registers = [0x00] * 16
+        self.registers = [0x00] * self.REG_COUNT
         self.index_register = 0
-        self.program_counter = 0x200
+        self.program_counter = self.ENTRY_POINT
 
         self.memory = Memory()
         self.screen = Screen()
-        self.keyboard = [0x00] * 16
+        self.keyboard = [0x00] * self.KEY_COUNT
         self.stack = []
 
         self.delay_timer = 0
