@@ -45,32 +45,32 @@ class TestInstructios(TestCase):
     def test_3XNN_equal(self):
         self.registers(V5=0x42)
         self.execute(0x3542)
-        self.assertEqual(ENTRY_POINT+0x4, self.cpu.program_counter)
+        self.assertEqual(0x204, self.cpu.program_counter)
 
     def test_3XNN_unequal(self):
         self.registers(V5=0x42)
         self.execute(0x3524)
-        self.assertEqual(ENTRY_POINT+0x2, self.cpu.program_counter)
+        self.assertEqual(0x202, self.cpu.program_counter)
 
     def test_4XNN_equal(self):
         self.registers(V2=0x69)
         self.execute(0x4269)
-        self.assertEqual(ENTRY_POINT+0x2, self.cpu.program_counter)
+        self.assertEqual(0x202, self.cpu.program_counter)
 
     def test_4XNN_unequal(self):
         self.registers(V2=0x69)
         self.execute(0x4270)
-        self.assertEqual(ENTRY_POINT+0x4, self.cpu.program_counter)
+        self.assertEqual(0x204, self.cpu.program_counter)
 
     def test_5XY0_equal(self):
         self.registers(V2=0x42, V3=0x42)
         self.execute(0x5230)
-        self.assertEqual(ENTRY_POINT+0x4, self.cpu.program_counter)
+        self.assertEqual(0x204, self.cpu.program_counter)
 
     def test_5XY0_unequal(self):
         self.registers(V2=0x42, V3=0x24)
         self.execute(0x5230)
-        self.assertEqual(ENTRY_POINT+0x2, self.cpu.program_counter)
+        self.assertEqual(0x202, self.cpu.program_counter)
 
     def test_6XNN(self):
         self.execute(0x6342)
@@ -94,7 +94,7 @@ class TestInstructios(TestCase):
         self.execute(0x8240)
         self.assertEqual(self.cpu.registers[2],
                          self.cpu.registers[4])
-        self.assertEqual(ENTRY_POINT+0x2, self.cpu.program_counter)
+        self.assertEqual(0x202, self.cpu.program_counter)
 
     def test_8XY1(self):
         self.registers(V1=0x0F, V2=0xF0)
@@ -197,7 +197,7 @@ class TestInstructios(TestCase):
     def test_ANNN(self):
         self.execute(0xA400)
         self.assertEqual(0x400, self.cpu.index_register)
-        self.assertEqual(ENTRY_POINT+0x2, self.cpu.program_counter)
+        self.assertEqual(0x202, self.cpu.program_counter)
 
     def test_BNNN(self):
         self.registers(V0=0x2)
@@ -317,7 +317,7 @@ class TestInstructios(TestCase):
         registers = self.cpu.registers[:5+1]
         in_memory = self.cpu.memory.read(0x400, len(registers))
         self.assertEqual(registers, in_memory)
-        self.assertEqual(ENTRY_POINT+0x2, self.cpu.program_counter)
+        self.assertEqual(0x202, self.cpu.program_counter)
 
     def test_FX65_all(self):
         values = range(16)
