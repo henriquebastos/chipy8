@@ -1,6 +1,6 @@
 # coding: utf-8
 from unittest import TestCase
-from chipy8 import Memory
+from chipy8.memory import Memory, FONT_SPRITES, FONT_ADDRESS
 
 
 ADDRESS = 0x200
