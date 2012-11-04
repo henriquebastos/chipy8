@@ -1,6 +1,6 @@
 # coding: utf-8
 from unittest import TestCase
-from chipy8 import bcd
+from chipy8.chip8 import bcd
 
 
 class TestBCD(TestCase):
