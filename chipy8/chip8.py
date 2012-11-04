@@ -1,5 +1,6 @@
 # coding: utf-8
 from random import randint
+from memory import Memory, Screen
 
 
 def bcd(number):
@@ -19,89 +20,6 @@ def bcd(number):
     result.append(n)
 
     return result
-
-
-class Memory(object):
-    def __init__(self):
-        self._stream = [0x00] * 4096
-
-    def __len__(self):
-        return len(self._stream)
-
-    def read_byte(self, address):
-        return self._stream[address]
-
-    def write_byte(self, address, data):
-        if data > 0xFF:
-            raise ValueError('%x > 0xFF' % data)
-
-        self._stream[address] = data
-
-    def load(self, address, data):
-        for offset, datum in enumerate(data):
-            self.write_byte(address + offset, datum)
-
-    def read_word(self, address):
-        high = self.read_byte(address) << 8
-        low = self.read_byte(address + 1)
-        return high + low
-
-    def read(self, address, length):
-        start = address
-        stop = address + length
-        return self._stream[start:stop]
-
-
-class Screen(list):
-    WIDTH = 64
-    HEIGHT = 32
-
-    def __init__(self):
-        super(Screen, self).__init__([0x00] * self.WIDTH * self.HEIGHT)
-
-    def _index(self, x, y):
-        return (y * self.WIDTH) + x
-
-    def draw(self, sprite, x, y):
-        collision = 0
-
-        for row, pixels in enumerate(sprite):
-            i = self._index(x, y + row)
-            collision |= self[i] & pixels
-            self[i] = pixels
-
-        return collision
-
-    def get(self, x, y, height=1):
-        buffer = []
-        for i in range(height):
-            buffer.append(self[self._index(x, y+i)])
-        return buffer
-
-
-ENTRY_POINT = 0x200
-
-FONT_SPRITES_ADDRESS = 0x50
-FONT_LENGTH = 0x5
-FONT_BEGIN = 0x50
-FONT_SPRITES = [
-    0xF0, 0x90, 0x90, 0x90, 0xF0,  # 0
-    0x20, 0x60, 0x20, 0x20, 0x70,  # 1
-    0xF0, 0x10, 0xF0, 0x80, 0xF0,  # 2
-    0xF0, 0x10, 0xF0, 0x10, 0xF0,  # 3
-    0x90, 0x90, 0xF0, 0x10, 0x10,  # 4
-    0xF0, 0x80, 0xF0, 0x10, 0xF0,  # 5
-    0xF0, 0x80, 0xF0, 0x90, 0xF0,  # 6
-    0xF0, 0x10, 0x20, 0x40, 0x40,  # 7
-    0xF0, 0x90, 0xF0, 0x90, 0xF0,  # 8
-    0xF0, 0x90, 0xF0, 0x10, 0xF0,  # 9
-    0xF0, 0x90, 0xF0, 0x90, 0x90,  # A
-    0xE0, 0x90, 0xE0, 0x90, 0xE0,  # B
-    0xF0, 0x80, 0x80, 0x80, 0xF0,  # C
-    0xE0, 0x90, 0x90, 0x90, 0xE0,  # D
-    0xF0, 0x80, 0xF0, 0x80, 0xF0,  # E
-    0xF0, 0x80, 0xF0, 0x80, 0x80,  # F
-]
 
 
 def I(op):
