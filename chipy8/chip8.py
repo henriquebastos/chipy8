@@ -323,8 +323,7 @@ class Chip8(object):
         to the hexadecimal digit stored in register VX.
         '''
         sprite = self.registers[X] % 16
-        offset = sprite * FONT_LENGTH
-        self.index_register = FONT_SPRITES_ADDRESS + offset
+        self.index_register = self.memory.font_address(sprite)
         self.increment_program_counter()
 
     def op_FX33(self, X):
