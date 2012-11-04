@@ -30,7 +30,7 @@ class TestInstructios(TestCase):
     def test_00EE(self):
         self.cpu.stack.append(0x200)
         self.execute(0x00EE, at=0x400)
-        self.assertItemsEqual([], self.cpu.stack)
+        self.assertSequenceEqual([], self.cpu.stack)
         self.assertEqual(0x200, self.cpu.program_counter)
 
     def test_1NNN(self):
@@ -40,7 +40,7 @@ class TestInstructios(TestCase):
     def test_2NNN(self):
         self.execute(0x2400)
         self.assertEqual(0x400, self.cpu.program_counter)
-        self.assertItemsEqual([0x200], self.cpu.stack)
+        self.assertSequenceEqual([0x200], self.cpu.stack)
 
     def test_3XNN_equal(self):
         self.registers(V5=0x42)
@@ -308,7 +308,7 @@ class TestInstructios(TestCase):
         self.registers(V1=0xFF)
         self.execute(0xF133)
         data = self.cpu.memory.read(self.cpu.index_register, 0x3)
-        self.assertItemsEqual(data, [0x2, 0x5, 0x5])
+        self.assertSequenceEqual(data, [0x2, 0x5, 0x5])
         self.assertEqual(self.cpu.program_counter, 0x202)
 
     def test_FX55(self):
@@ -316,7 +316,7 @@ class TestInstructios(TestCase):
         self.execute(0xF555)
         registers = self.cpu.registers[:5+1]
         in_memory = self.cpu.memory.read(0x400, len(registers))
-        self.assertItemsEqual(registers, in_memory)
+        self.assertSequenceEqual(registers, in_memory)
         self.assertEqual(0x202, self.cpu.program_counter)
 
     def test_FX65_all(self):
@@ -324,7 +324,7 @@ class TestInstructios(TestCase):
         self.cpu.index_register = 0x400
         self.cpu.memory.load(self.cpu.index_register, values)
         self.execute(0xFF65)
-        self.assertItemsEqual(values, self.cpu.registers)
+        self.assertSequenceEqual(values, self.cpu.registers)
         self.assertEqual(self.cpu.program_counter, 0x202)
 
     def test_FX65_one(self):

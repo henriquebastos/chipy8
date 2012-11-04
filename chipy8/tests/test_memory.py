@@ -36,17 +36,17 @@ class TestMemory(TestCase):
 
     def test_read(self):
         self.memory.load(ADDRESS, [0x01, 0x02])
-        self.assertItemsEqual([0x01, 0x02], self.memory.read(ADDRESS, 2))
+        self.assertSequenceEqual([0x01, 0x02], self.memory.read(ADDRESS, 2))
 
     def test_font_sprites(self):
         'Chip8 has 16 preset sprites corresponding from 0 to F.'
         in_memory = self.memory.read(FONT_ADDRESS, len(FONT_SPRITES))
-        self.assertItemsEqual(FONT_SPRITES, in_memory)
+        self.assertSequenceEqual(FONT_SPRITES, in_memory)
 
     def test_font_address(self):
         self.assertEqual(FONT_ADDRESS, self.memory.font_address(0))
 
     def test_font(self):
         sprite = [0xF0, 0x90, 0x90, 0x90, 0xF0] # 0
-        self.assertItemsEqual(sprite, self.memory.font(0))
+        self.assertSequenceEqual(sprite, self.memory.font(0))
 
