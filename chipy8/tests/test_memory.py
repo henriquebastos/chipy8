@@ -43,3 +43,10 @@ class TestMemory(TestCase):
         in_memory = self.memory.read(FONT_ADDRESS, len(FONT_SPRITES))
         self.assertEqual(FONT_SPRITES, in_memory)
 
+    def test_font_address(self):
+        self.assertEqual(FONT_ADDRESS, self.memory.font_address(0))
+
+    def test_font(self):
+        sprite = [0xF0, 0x90, 0x90, 0x90, 0xF0] # 0
+        self.assertListEqual(sprite, self.memory.font(0))
+

@@ -1,6 +1,7 @@
 # coding: utf-8
 from unittest import TestCase
-from chipy8 import Chip8, ENTRY_POINT, FONT_BEGIN, FONT_LENGTH
+from chipy8.chip8 import Chip8
+from chipy8.memory import FONT_ADDRESS
 from mock import patch
 
 
@@ -17,10 +18,6 @@ class TestInstructios(TestCase):
         self.cpu.memory.load(at, data)
         self.cpu.program_counter = at
         self.cpu.cycle()
-
-    def font(self, value):
-        address = FONT_BEGIN + (value * FONT_LENGTH)
-        return self.cpu.memory.read(address, FONT_LENGTH)
 
     def collision(self):
         return self.cpu.registers[0xF]
@@ -214,19 +211,19 @@ class TestInstructios(TestCase):
         self.assertEqual(self.cpu.program_counter, 0x202)
 
     def test_DXYN_no_collision(self):
-        self.cpu.index_register = FONT_BEGIN
+        self.cpu.index_register = FONT_ADDRESS
         self.registers(V0=0, V1=0)
         self.execute(0xD005)
-        self.assertDrawn(self.font(0), 0, 1)
+        self.assertDrawn(self.cpu.memory.font(0), 0, 1)
         self.assertFalse(self.collision())
         self.assertEqual(self.cpu.program_counter, 0x202)
 
     def test_DXYN_with_collision(self):
         self.cpu.screen.draw([0xFF], 0, 0)
-        self.cpu.index_register = FONT_BEGIN
+        self.cpu.index_register = FONT_ADDRESS
         self.registers(V0=0, V1=0)
         self.execute(0xD005)
-        self.assertDrawn(self.font(0), 0, 1)
+        self.assertDrawn(self.cpu.memory.font(0), 0, 1)
         self.assertTrue(self.collision())
         self.assertEqual(self.cpu.program_counter, 0x202)
 

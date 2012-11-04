@@ -60,6 +60,12 @@ class Memory(object):
         stop = address + length
         return self._stream[start:stop]
 
+    def font_address(self, value):
+        return FONT_ADDRESS + (value * FONT_LENGTH)
+
+    def font(self, value):
+        return self.read(self.font_address(value), FONT_LENGTH)
+
 
 class Screen(list):
     WIDTH = 64
