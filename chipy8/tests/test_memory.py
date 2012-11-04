@@ -37,3 +37,9 @@ class TestMemory(TestCase):
     def test_read(self):
         self.memory.load(ADDRESS, [0x01, 0x02])
         self.assertListEqual([0x01, 0x02], self.memory.read(ADDRESS, 2))
+
+    def test_font_sprites(self):
+        'Chip8 has 16 preset sprites corresponding from 0 to F.'
+        in_memory = self.memory.read(FONT_ADDRESS, len(FONT_SPRITES))
+        self.assertEqual(FONT_SPRITES, in_memory)
+
