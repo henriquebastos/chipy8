@@ -83,3 +83,9 @@ class TestScreen(TestCase):
         region = self.screen.get_region(0, 0, 8, 5)
         expected = self.screen.unpack_sprite(self.sprite)
         self.assertSequenceEqual(expected, region)
+
+    def test_get(self):
+        # Set a pixel
+        self.screen[self.screen._index(10, 10)] = 1
+
+        self.assertEqual(1, self.screen.get(10, 10))
