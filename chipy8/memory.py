@@ -121,7 +121,6 @@ class Screen(list):
         pixels = []
         for j in range(height):
             for i in range(width):
-                pixel = self[self._index(x+i, y+j)]
+                pixel = self.get(x+i, y+j)
                 pixels.append(pixel)
         return pixels
-
