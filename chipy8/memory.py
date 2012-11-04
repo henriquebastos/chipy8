@@ -77,6 +77,20 @@ class Screen(list):
     def _index(self, x, y):
         return (y * self.WIDTH) + x
 
+    def unpack_pixels(self, byte):
+        '''
+        Unpack a byte representing a row of pixels to a list of
+        individual integers representing each pixel.
+
+        Example: 0b10101010 ->  [1, 0, 1, 0, 1, 0, 1, 0]
+        '''
+        pixels = []
+        for col in range(8):
+            mask = 0x80 >> col
+            pixel = byte & mask != 0
+            pixels.append(int(pixel))
+        return pixels
+
     def draw(self, sprite, x, y):
         collision = 0
 

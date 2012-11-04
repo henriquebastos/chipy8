@@ -1,6 +1,6 @@
 # coding: utf-8
 from unittest import TestCase
-from chipy8.memory import Memory, FONT_SPRITES, FONT_ADDRESS
+from chipy8.memory import Memory, Screen, FONT_SPRITES, FONT_ADDRESS
 
 
 ADDRESS = 0x200
@@ -50,3 +50,17 @@ class TestMemory(TestCase):
         sprite = [0xF0, 0x90, 0x90, 0x90, 0xF0] # 0
         self.assertSequenceEqual(sprite, self.memory.font(0))
 
+
+class TestScreen(TestCase):
+    def setUp(self):
+        self.screen = Screen()
+
+    def test_unpack_pixels(self):
+        pixels = 0b11111111
+        expected = [1, 1, 1, 1, 1, 1, 1, 1]
+        self.assertListEqual(expected, self.screen.unpack_pixels(pixels))
+
+    def test_unpack_pixels_regression(self):
+        pixels = 0b01111110
+        expected = [0, 1, 1, 1, 1, 1, 1, 0]
+        self.assertListEqual(expected, self.screen.unpack_pixels(pixels))
