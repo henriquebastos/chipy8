@@ -111,9 +111,11 @@ class Screen(list):
 
         return collision
 
-    def get(self, x, y, height=1):
-        buffer = []
-        for i in range(height):
-            buffer.append(self[self._index(x, y+i)])
-        return buffer
+    def get(self, x, y, width=8, height=1):
+        pixels = []
+        for j in range(height):
+            for i in range(width):
+                pixel = self[self._index(x+i, y+j)]
+                pixels.append(pixel)
+        return pixels
 

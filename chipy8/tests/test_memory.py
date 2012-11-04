@@ -78,3 +78,8 @@ class TestScreen(TestCase):
                     0, 1, 1, 1, 1, 1, 1, 0,]
         self.assertListEqual(expected, self.screen.unpack_sprite(self.sprite))
 
+    def test_get_region(self):
+        self.screen.draw(self.sprite, 0, 0)
+        region = self.screen.get(0, 0, 8, 5)
+        expected = self.screen.unpack_sprite(self.sprite)
+        self.assertSequenceEqual(expected, region)
