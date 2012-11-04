@@ -205,7 +205,7 @@ class TestInstructios(TestCase):
         self.assertEqual(self.cpu.program_counter, 0x402)
 
     def test_CXNN(self):
-        with patch('chipy8.randint', return_value=0x55) as m:
+        with patch('chipy8.chip8.randint', return_value=0x55) as m:
             self.execute(0xC233)
         self.assertEqual(self.cpu.registers[2], 0x11)
         self.assertEqual(self.cpu.program_counter, 0x202)
