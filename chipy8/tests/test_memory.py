@@ -54,6 +54,11 @@ class TestMemory(TestCase):
 class TestScreen(TestCase):
     def setUp(self):
         self.screen = Screen()
+        self.sprite = [0b01111110,
+                       0b10000001,
+                       0b10000001,
+                       0b10000001,
+                       0b01111110,]
 
     def test_unpack_pixels(self):
         pixels = 0b11111111
@@ -64,3 +69,12 @@ class TestScreen(TestCase):
         pixels = 0b01111110
         expected = [0, 1, 1, 1, 1, 1, 1, 0]
         self.assertListEqual(expected, self.screen.unpack_pixels(pixels))
+
+    def test_unpack_sprite(self):
+        expected = [0, 1, 1, 1, 1, 1, 1, 0,
+                    1, 0, 0, 0, 0, 0, 0, 1,
+                    1, 0, 0, 0, 0, 0, 0, 1,
+                    1, 0, 0, 0, 0, 0, 0, 1,
+                    0, 1, 1, 1, 1, 1, 1, 0,]
+        self.assertListEqual(expected, self.screen.unpack_sprite(self.sprite))
+

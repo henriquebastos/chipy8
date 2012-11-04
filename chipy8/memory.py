@@ -91,6 +91,16 @@ class Screen(list):
             pixels.append(int(pixel))
         return pixels
 
+    def unpack_sprite(self, sprite):
+        '''
+        Unpack a sprite (list of bytes) into a uni-dimensional array of
+        integers representing each pixel.
+        '''
+        pixels = []
+        for byte in sprite:
+            pixels.extend(self.unpack_pixels(byte))
+        return pixels
+
     def draw(self, sprite, x, y):
         collision = 0
 
