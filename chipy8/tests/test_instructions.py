@@ -269,13 +269,13 @@ class TestInstructios(TestCase):
     def test_FX15(self):
         self.registers(V3=0x42)
         self.execute(0xF315)
-        self.assertEqual(self.cpu.delay_timer, 0x42)
+        self.assertEqual(self.cpu.delay_timer, 0x41) # Set and dec 1
         self.assertEqual(self.cpu.program_counter, 0x202)
 
     def test_FX18(self):
         self.registers(V3=0x42)
         self.execute(0xF318)
-        self.assertEqual(self.cpu.sound_timer, 0x42)
+        self.assertEqual(self.cpu.sound_timer, 0x41) # Set and dec 1
         self.assertEqual(self.cpu.program_counter, 0x202)
 
     def test_FX1E(self):

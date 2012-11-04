@@ -128,6 +128,14 @@ class Chip8(object):
         instruction, args = self.decode(word)
         self.execute(instruction, args)
 
+        if self.delay_timer > 0:
+            self.delay_timer -= 1
+
+        if self.sound_timer > 0:
+            if self.sound_timer == 1:
+                self.beep()
+            self.sound_timer -= 1
+
     def increment_program_counter(self):
         self.program_counter += 0x2
 
@@ -136,6 +144,9 @@ class Chip8(object):
 
     def wait_for_keypress(self):
         raise NotImplementedError()
+
+    def beep(self):
+        print 'Beep!'
 
     # INSTRUCTIONS
 
