@@ -114,7 +114,7 @@ class Screen(list):
 
         return collision
 
-    def get(self, x, y, width=8, height=1):
+    def get_region(self, x, y, width=8, height=1):
         pixels = []
         for j in range(height):
             for i in range(width):

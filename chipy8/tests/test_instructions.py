@@ -24,7 +24,7 @@ class TestInstructios(TestCase):
 
     def assertDrawn(self, sprite, VX, VY):
         x, y = self.cpu.registers[VX], self.cpu.registers[VY]
-        region = self.cpu.screen.get(x, y, height=len(sprite))
+        region = self.cpu.screen.get_region(x, y, height=len(sprite))
         expected = self.cpu.screen.unpack_sprite(sprite)
         self.assertSequenceEqual(expected, region)
 
