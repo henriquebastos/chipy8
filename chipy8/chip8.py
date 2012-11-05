@@ -118,7 +118,10 @@ class Chip8(object):
         return instruction, args
 
     def execute(self, instruction, args):
-        self.INSTRUCTION_SET[instruction](*args)
+        if instruction not in self.INSTRUCTION_SET:
+            raise NotImplementedError('{:04x} - {}'.format(instruction, args))
+
+        self.INSTRUCTION_SET.get(instruction)(*args)
 
     def fetch(self):
         return self.memory.read_word(self.program_counter)
