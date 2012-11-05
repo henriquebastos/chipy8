@@ -28,6 +28,11 @@ class TestInstructios(TestCase):
         expected = self.cpu.screen.unpack_sprite(sprite)
         self.assertSequenceEqual(expected, region)
 
+    def test_00E0(self):
+        self.cpu.screen.clear(pixel=1)
+        self.execute(0x00E0)
+        self.assertListEqual([0] * len(self.cpu.screen), self.cpu.screen)
+
     def test_00EE(self):
         self.cpu.stack.append(0x200)
         self.execute(0x00EE, at=0x400)

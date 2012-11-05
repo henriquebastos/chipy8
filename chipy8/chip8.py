@@ -56,6 +56,7 @@ class Chip8(object):
         self.sound_timer = 0
 
         self.INSTRUCTION_SET = {
+            0x00E0: self.op_00E0,
             0x00EE: self.op_00EE,
             0x1   : self.op_1NNN,
             0x2   : self.op_2NNN,
@@ -152,6 +153,10 @@ class Chip8(object):
         print 'Beep!'
 
     # INSTRUCTIONS
+    def op_00E0(self):
+        'Clear screen'
+        self.screen.clear()
+        self.increment_program_counter()
 
     def op_00EE(self):
         'Return from a subroutine.'

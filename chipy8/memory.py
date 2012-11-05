@@ -124,3 +124,7 @@ class Screen(list):
                 pixel = self.get(x+i, y+j)
                 pixels.append(pixel)
         return pixels
+
+    def clear(self, pixel=0):
+        for i in range(len(self)):
+            self[i] = pixel
