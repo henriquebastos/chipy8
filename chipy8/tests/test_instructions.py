@@ -46,7 +46,7 @@ class TestInstructios(TestCase):
     def test_2NNN(self):
         self.execute(0x2400)
         self.assertEqual(0x400, self.cpu.program_counter)
-        self.assertSequenceEqual([0x200], self.cpu.stack)
+        self.assertSequenceEqual([0x202], self.cpu.stack)
 
     def test_3XNN_equal(self):
         self.registers(V5=0x42)

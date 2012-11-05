@@ -168,6 +168,7 @@ class Chip8(object):
 
     def op_2NNN(self, address):
         'Execute subroutine starting at address NNN.'
+        self.increment_program_counter()
         self.stack.append(self.program_counter)
         self.program_counter = address
 
