@@ -108,7 +108,9 @@ class Screen(list):
             pixels = self.unpack_pixels(sprite_pixels)
 
             for sprite_x, pixel in enumerate(pixels):
-                i = self._index(x + sprite_x, y + sprite_y)
+                screen_x = (x + sprite_x) % self.WIDTH
+                screen_y = (y + sprite_y) % self.HEIGHT
+                i = self._index(screen_x, screen_y)
                 collision |= self[i] & pixel
                 self[i] ^= pixel
 
