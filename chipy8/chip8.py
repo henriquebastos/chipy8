@@ -43,13 +43,13 @@ class Chip8(object):
     KEY_COUNT = 16
 
     def __init__(self):
-        self.registers = [0x00] * self.REG_COUNT
+        self.registers = bytearray(self.REG_COUNT)
         self.index_register = 0
         self.program_counter = self.ENTRY_POINT
 
         self.memory = Memory()
         self.screen = Screen()
-        self.keyboard = [0x00] * self.KEY_COUNT
+        self.keyboard = bytearray(self.KEY_COUNT)
         self.stack = []
 
         self.delay_timer = 0

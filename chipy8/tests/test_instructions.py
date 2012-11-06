@@ -339,5 +339,5 @@ class TestInstructios(TestCase):
         self.cpu.index_register = 0x400
         self.cpu.memory.write_byte(self.cpu.index_register, 0xFF)
         self.execute(0xFF65)
-        self.assertListEqual(self.cpu.registers, [0xFF] + [0] * 15)
+        self.assertSequenceEqual(self.cpu.registers, [0xFF] + [0] * 15)
         self.assertEqual(self.cpu.program_counter, 0x202)
