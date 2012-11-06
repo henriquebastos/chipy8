@@ -112,7 +112,7 @@ class Screen(list):
                 collision |= self[i] & pixel
                 self[i] ^= pixel
 
-        return collision
+        return int(collision)
 
     def get(self, x, y):
         return self[self._index(x, y)]
