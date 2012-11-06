@@ -110,7 +110,7 @@ class Screen(list):
             for sprite_x, pixel in enumerate(pixels):
                 i = self._index(x + sprite_x, y + sprite_y)
                 collision |= self[i] & pixel
-                self[i] = pixel
+                self[i] ^= pixel
 
         return collision
 

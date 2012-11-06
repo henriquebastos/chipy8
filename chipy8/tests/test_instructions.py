@@ -225,11 +225,13 @@ class TestInstructios(TestCase):
         self.assertEqual(self.cpu.program_counter, 0x202)
 
     def test_DXYN_with_collision(self):
+        sprite = [0xF0, 0x90, 0x90, 0x90, 0xF0]
+        self.cpu.memory.load(0, sprite)
         self.cpu.screen.draw([0xFF], 0, 0) # previous state
-        self.cpu.index_register = FONT_ADDRESS
+        self.cpu.index_register = 0
         self.registers(V0=0, V1=0)
         self.execute(0xD005)
-        self.assertDrawn(self.cpu.memory.font(0), 0, 1)
+        self.assertDrawn([0x0F, 0x90, 0x90, 0x90, 0xF0], 0, 1)
         self.assertTrue(self.collision())
         self.assertEqual(self.cpu.program_counter, 0x202)
 
