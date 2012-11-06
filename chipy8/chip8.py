@@ -36,6 +36,8 @@ N   = lambda op: (op | 0xFFF0) ^ 0xFFF0
 NN  = lambda op: (op | 0xFF00) ^ 0xFF00
 NNN = lambda op: (op | 0xF000) ^ 0xF000
 
+def byte(num):
+    return num % 256
 
 class Chip8(object):
     ENTRY_POINT = 0x200
@@ -200,7 +202,7 @@ class Chip8(object):
 
     def op_7XNN(self, X, NN):
         'Add the value NN to register VX.'
-        self.registers[X] = (self.registers[X] + NN) % 256
+        self.registers[X] = byte(self.registers[X] + NN)
         self.increment_program_counter()
 
     def op_8XY0(self, X, Y):
@@ -228,7 +230,7 @@ class Chip8(object):
            Set VF to 01 if a carry occurs
            Set VF to 00 if a carry does not occur'''
         value = self.registers[X] + self.registers[Y]
-        self.registers[X] = value % 256
+        self.registers[X] = byte(value)
         self.registers[0xF] = 1 if value > 0xFF else 0
         self.increment_program_counter()
 
@@ -239,7 +241,7 @@ class Chip8(object):
         Set VF to 01 if a borrow does not occur
         '''
         value = self.registers[X] - self.registers[Y]
-        self.registers[X] = value % 256
+        self.registers[X] = byte(value)
         self.registers[0xF] = 0 if value < 0 else 1
         self.increment_program_counter()
 
@@ -259,7 +261,7 @@ class Chip8(object):
         Set VF to 01 if a borrow does not occur
         '''
         value = self.registers[Y] - self.registers[X]
-        self.registers[X] = value % 256
+        self.registers[X] = byte(value)
         self.registers[0xF] = 0 if value < 0 else 1
         self.increment_program_counter()
 
@@ -268,7 +270,7 @@ class Chip8(object):
         Store the value of register VY shifted left one bit in VX
         Set VF to the most significant bit prior to the shift
         '''
-        self.registers[X] = (self.registers[Y] << 1) % 256
+        self.registers[X] = byte(self.registers[Y] << 1)
         self.registers[0xF] = self.registers[Y] >> 7
         self.increment_program_counter()
 
