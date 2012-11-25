@@ -10,3 +10,4 @@
 tmp
 /cover/
 .coverage
+.noseids
