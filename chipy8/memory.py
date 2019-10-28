@@ -73,6 +73,7 @@ class Screen(list):
 
     def __init__(self):
         super(Screen, self).__init__([0x00] * self.WIDTH * self.HEIGHT)
+        self.changed = True
 
     def _index(self, x, y):
         return (y * self.WIDTH) + x
@@ -114,6 +115,8 @@ class Screen(list):
                 collision |= self[i] & pixel
                 self[i] ^= pixel
 
+        self.changed = True
+        
         return int(collision)
 
     def get(self, x, y):
@@ -130,3 +133,4 @@ class Screen(list):
     def clear(self, pixel=0):
         for i in range(len(self)):
             self[i] = pixel
+        self.changed = True

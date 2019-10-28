@@ -1,7 +1,8 @@
 # coding: utf-8
 import sys
 import pygame
-from pygame.locals import *
+from pygame.locals import (K_0, K_1, K_2, K_3, K_4, K_5, K_6, K_7, K_8, K_9, 
+                           K_a, K_b, K_c, K_d, K_e, K_f, QUIT, KEYDOWN, KEYUP, Rect)
 import argparse
 from unipath import Path
 from chip8 import Chip8
@@ -50,12 +51,7 @@ def wait_for_keypress():
 
 emulator.wait_for_keypress = wait_for_keypress
 
-import time
-screen_clock = 0
 while True:
-    #clock.tick(60)
-    #time.sleep(1)
-
     for event in pygame.event.get():
         if event.type == QUIT:
             sys.exit()
@@ -68,19 +64,20 @@ while True:
             if key:
                 emulator.keyboard[key] = 0
 
-    #print emulator.keyboard
-    #print emulator.delay_timer
+    # print emulator.keyboard
+    # print emulator.delay_timer
     emulator.cycle()
 
-    background.fill((0, 0, 0))
+    if True or emulator.screen.changed:
+        background.fill((0, 0, 0))
 
-    for x in range(64):
-        for y in range(32):
-            if emulator.screen.get(x, y):
-                pixel = Rect(x*10, y*10, 10, 10)
-                pygame.draw.rect(background, (255, 255, 255), pixel)
+        for x in range(64):
+            for y in range(32):
+                if emulator.screen.get(x, y):
+                    pixel = Rect(x*10, y*10, 10, 10)
+                    pygame.draw.rect(background, (255, 255, 255), pixel)
 
-    screen.blit(background, background.get_rect())
+        screen.blit(background, background.get_rect())
 
-    pygame.display.update()
-        #emulator.screen.need_update = False
+        pygame.display.update()
+    emulator.screen.changed = False
