@@ -56,28 +56,25 @@ while True:
         if event.type == QUIT:
             sys.exit()
         elif event.type == KEYDOWN:
-            key = KEYMAP.get(event.key)
-            if key:
+            if key := KEYMAP.get(event.key):
                 emulator.keyboard[key] = 1
         elif event.type == KEYUP:
-            key = KEYMAP.get(event.key)
-            if key:
+            if key := KEYMAP.get(event.key):
                 emulator.keyboard[key] = 0
 
     # print emulator.keyboard
     # print emulator.delay_timer
     emulator.cycle()
 
-    if True or emulator.screen.changed:
-        background.fill((0, 0, 0))
+    background.fill((0, 0, 0))
 
-        for x in range(64):
-            for y in range(32):
-                if emulator.screen.get(x, y):
-                    pixel = Rect(x*10, y*10, 10, 10)
-                    pygame.draw.rect(background, (255, 255, 255), pixel)
+    for x in range(64):
+        for y in range(32):
+            if emulator.screen.get(x, y):
+                pixel = Rect(x*10, y*10, 10, 10)
+                pygame.draw.rect(background, (255, 255, 255), pixel)
 
-        screen.blit(background, background.get_rect())
+    screen.blit(background, background.get_rect())
 
-        pygame.display.update()
+    pygame.display.update()
     emulator.screen.changed = False

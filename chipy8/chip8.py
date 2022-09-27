@@ -364,7 +364,7 @@ class Chip8(object):
 
     def op_F055(self, X):
         'Store values of V0 to VX inclusive in mem starting at addr I.'
-        data = self.registers[0:X+1]
+        data = self.registers[:X+1]
         self.memory.load(self.index_register, data)
         self.increment_program_counter()
 
